@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import './App.css';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
@@ -13,6 +14,11 @@ import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import Dashboard from "./components/dashboard/Dashboard";
+import AdminDashboard from "./components/dashboard/AdminDashboard";
+import SearchingBooksAPI from "./components/layout/SearchingBooksAPI"
+import Error from "./components/error/Error";
+
+require('dotenv').config();
 
 if (localStorage.jwtToken) {
   const token = localStorage.jwtToken;
@@ -35,11 +41,13 @@ class App extends Component {
         <Router>
           <div className="App">
             <Navbar />
-            <Route exact path="/" component={Landing} />
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/login" component={Login} />
             <Switch>
-              <PrivateRoute exact path="/dashboard" component={Dashboard} />
+              <Route exact path="/" component={Landing} />
+              <Route path="/register" component={Register} />
+              <Route path="/login" component={Login} />
+              <PrivateRoute exact path="/dashboard" component={[Dashboard, AdminDashboard]} />
+              <Route path="/dashboard/apiBooks" component={SearchingBooksAPI} />
+              <Route path="*" component={Error} />
             </Switch>
           </div>
         </Router>

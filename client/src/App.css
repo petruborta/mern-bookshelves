@@ -1,0 +1,50 @@
+/*=====================================
+site-header
+=====================================*/
+.site-header {
+  display: flex;
+}
+
+.header-main-nav {
+  height: 100px;
+  display: flex;
+  background-color: cadetblue;
+}
+
+.logo-container {
+  display: flex;
+  flex: auto;
+  justify-content: center;
+}
+
+.logo {
+  font-size: 3rem;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-img {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+}
+
+.header-right-nav {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  flex: none;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.btn {
+  margin-right: 1rem;
+  border-radius: 3px;
+  letter-spacing: 1.5px;
+  background-color: burlywood;
+}

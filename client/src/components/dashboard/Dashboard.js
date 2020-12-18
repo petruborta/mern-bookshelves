@@ -23,6 +23,21 @@ class Dashboard extends Component {
                 <span style={{ fontFamily: "monospace" }}>MERN</span> app 👏
               </p>
             </h4>
+            <br />
+            <div>
+              <button
+                className="btn"
+              >
+                Find books
+              </button>
+              <button
+                className="btn"
+              >
+                My books
+              </button>
+              {this.props.children}
+            </div>
+            <br />
             <button
               style={{
                 width: "150px",
