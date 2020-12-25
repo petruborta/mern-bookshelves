@@ -1,3 +1,7 @@
+.invisible {
+  opacity: 0;
+}
+
 /*=====================================
 site-header
 =====================================*/
@@ -47,4 +51,78 @@ site-header
   border-radius: 3px;
   letter-spacing: 1.5px;
   background-color: burlywood;
+}
+
+.search-form-container {
+  width: 80%;
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+.search-form-container > form {
+  height: 200px;
+}
+
+.search-results {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.book {
+  width: 300px;
+  margin: 1rem;
+}
+
+.categories {
+  font-size: 16px;
+  font-weight: 500;
+  font-style: italic;
+  color: white;
+  position: absolute;
+  margin: 0.5rem;
+  padding: 0.25rem 1rem;
+  background-color: #eaa221;
+  box-shadow: 0 0 10px 5px white;
+  border-radius: 20px;
+  z-index: 1;
+}
+
+.book-image {
+  position: relative;
+  height: 425px;
+  overflow: hidden;
+}
+
+.book-image > img {
+  width: 100%;
+  object-fit: cover;
+  transition: transform 0.25s ease-in-out;
+}
+
+.book:hover img {
+  transform: scale(1.1);
+}
+
+.book-image > .material-icons {
+  font-size: 40px;
+  color: dodgerblue;
+  border-radius: 50%;
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  background-color: white;
+  box-shadow: 0 2px 5px 1px grey;
+  cursor: pointer;
+  opacity: 0;
+  transition: transform 0.25s ease-in-out,
+    opacity 0.3s ease-in-out;
+}
+
+.book-image > .material-icons:hover {
+  transform: scale(1.2);
+}
+
+.book:hover .material-icons {
+  opacity: 1;
 }

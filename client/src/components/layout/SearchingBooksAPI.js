@@ -1,12 +1,17 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { addBook } from "../../actions/bookActions";
 import classnames from "classnames";
+import Book from "./Book";
 
 class SearchingBooksAPI extends Component {
   constructor() {
     super();
     this.state = {
       userInput: "",
+      searchResult: [],
       errors: {}
     };
   }
@@ -18,12 +23,12 @@ class SearchingBooksAPI extends Component {
   onSubmit = e => {
     e.preventDefault();
     var xmlhttp = new XMLHttpRequest();
-    var url = `https://www.googleapis.com/books/v1/volumes?q=${this.state.userInput}&maxResults=40&key=${process.env.REACT_APP_BOOKS_API_KEY}`;
+    var url = `https://www.googleapis.com/books/v1/volumes?q=${this.state.userInput}&maxResults=10&key=${process.env.REACT_APP_BOOKS_API_KEY}`;
 
-    xmlhttp.onreadystatechange = function() {
+    xmlhttp.onreadystatechange = () => {
       if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-        var response = JSON.parse(xmlhttp.responseText);
-        console.log(response);
+        var response = JSON.parse(xmlhttp.responseText).items.slice(0, 5);
+        this.setState({searchResult: response});
       }
     };
     xmlhttp.open("GET", url, true);
@@ -36,7 +41,7 @@ class SearchingBooksAPI extends Component {
     return(
       <div className="container">
         <div style={{ marginTop: "4rem" }} className="row">
-          <div className="col s8 offset-s2">
+          <div className="search-form-container">
             <Link to="/dashboard" className="btn-flat waves-effect">
               <i className="material-icons left">keyboard_backspace</i>
               Back to dashboard
@@ -72,10 +77,26 @@ class SearchingBooksAPI extends Component {
               </div>
             </form>
           </div>
+
+          <div className="search-results">
+            {Array.from(this.state.searchResult).map((data) => (<Book key={data.id} bookData={data} addBook={this.props.addBook}/>))}
+          </div>
         </div>
       </div>
     );
   }
 }
 
-export default SearchingBooksAPI;
+SearchingBooksAPI.propTypes = {
+  addBook: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  errors: state.errors
+});
+
+export default connect(
+  mapStateToProps,
+  { addBook }
+)(SearchingBooksAPI);

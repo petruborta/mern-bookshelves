@@ -7,7 +7,7 @@ class AdminDashboard extends Component {
     return (
       <Dashboard>
         <div style={{ marginTop: "2rem" }}>
-          <Link to="/dashboard/apiBooks" className="btn">Add new books</Link>
+          <Link to="/dashboard/api-books" className="btn">Add new books</Link>
           <button 
             className="btn"
           >

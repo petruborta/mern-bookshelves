@@ -46,7 +46,7 @@ class App extends Component {
               <Route path="/register" component={Register} />
               <Route path="/login" component={Login} />
               <PrivateRoute exact path="/dashboard" component={[Dashboard, AdminDashboard]} />
-              <Route path="/dashboard/apiBooks" component={SearchingBooksAPI} />
+              <Route path="/dashboard/api-books" component={SearchingBooksAPI} />
               <Route path="*" component={Error} />
             </Switch>
           </div>
