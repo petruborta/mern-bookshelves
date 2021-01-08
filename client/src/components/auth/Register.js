@@ -23,11 +23,19 @@ class Register extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.errors) {
-      this.setState({
-        errors: nextProps.errors
-      });
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { errors } = nextProps;
+    
+    return errors !== prevState.errors 
+      ? { errors: errors }
+      : null;
+  }
+
+  componentDidUpdate(nextProps) {
+    const { errors } = nextProps;
+    
+    if (this.state.errors === {}) {
+      this.setState({ errors });
     }
   }
 
@@ -43,7 +51,7 @@ class Register extends Component {
       password: this.state.password,
       password2: this.state.password2
     };
-    console.log(newUser);
+    
     this.props.registerUser(newUser, this.props.history); 
   };
 

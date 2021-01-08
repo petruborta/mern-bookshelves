@@ -8,16 +8,8 @@ class AdminDashboard extends Component {
       <Dashboard>
         <div style={{ marginTop: "2rem" }}>
           <Link to="/dashboard/api-books" className="btn">Add new books</Link>
-          <button 
-            className="btn"
-          >
-            Manage existing books
-          </button>
-          <button 
-            className="btn"
-          >
-            Manage administrators
-          </button>
+          <Link to="/dashboard/manage-books" className="btn">Manage existing books</Link>
+          <Link to="/dashboard/manage-admins" className="btn">Manage administrators</Link>
         </div>
       </Dashboard>
     );

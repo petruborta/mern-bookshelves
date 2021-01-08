@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 class Error extends Component {
   render() {
@@ -6,7 +7,11 @@ class Error extends Component {
       <div style={{ height: "75vh" }} className="container valign-wrapper">
         <div className="row">
           <div className="col s12 center-align">
-            <h1>An error has occurred</h1>
+            <Link to="/dashboard" className="btn-flat waves-effect">
+              <i className="material-icons left">keyboard_backspace</i>
+              Back to dashboard
+            </Link>
+            <h1>{this.props.message || "An error has occured"}</h1>
           </div>
         </div>
       </div>

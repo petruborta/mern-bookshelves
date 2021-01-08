@@ -2,18 +2,21 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { addBook } from "../../actions/bookActions";
+import { fetchBooksAtlas, deleteBook } from "../../actions/bookActions";
 import classnames from "classnames";
-import BookAPI from "./BookAPI";
+import dummyCover from "../../images/dummy_cover.png";
 
-class SearchingBooksAPI extends Component {
-  constructor() {
-    super();
+class ManagingBooks extends Component {
+  constructor(props) {
+    super(props);
     this.state = {
       userInput: "",
-      books: [],
       errors: {}
     };
+  }
+
+  componentDidMount() {
+    this.props.fetchBooksAtlas();
   }
 
   onChange = e => {
@@ -22,32 +25,24 @@ class SearchingBooksAPI extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    var xmlhttp = new XMLHttpRequest();
-    var url = `https://www.googleapis.com/books/v1/volumes?q=${this.state.userInput}&maxResults=10&key=${process.env.REACT_APP_BOOKS_API_KEY}`;
 
-    xmlhttp.onreadystatechange = () => {
-      if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-        var response = JSON.parse(xmlhttp.responseText).items.slice(0, 3);
-        this.setState({books: response});
-      }
-    };
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
   };
 
-  renderBooksAPI() {
-    return this.state.books.map((book) => (
-      <BookAPI 
-        key={book.id} 
+  renderBooks() {
+    const { user } = this.props.auth;
+
+    return user.booksAtlas.map((book) => (
+      <Book 
+        key={book.apiID} 
         bookData={book} 
-        addBook={this.props.addBook} 
+        deleteBook={this.props.deleteBook} 
       />
     ));
   }
 
   render() {
     const { errors } = this.state;
-
+    
     return(
       <div className="container">
         <div style={{ marginTop: "4rem" }} className="row">
@@ -88,8 +83,19 @@ class SearchingBooksAPI extends Component {
             </form>
           </div>
 
-          <div className="search-results">
-            {this.renderBooksAPI()}
+          <div className={this.state.userType === "default" ? "invisible" : ""}>
+            <table>
+              <thead>
+                <tr>
+                  <th>Image</th>
+                  <th>Description</th>
+                  <th className="action">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.renderBooks()}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -97,16 +103,50 @@ class SearchingBooksAPI extends Component {
   }
 }
 
-SearchingBooksAPI.propTypes = {
-  addBook: PropTypes.func.isRequired,
+ManagingBooks.propTypes = {
+  fetchBooksAtlas: PropTypes.func.isRequired,
+  deleteBook: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
+  auth: state.auth,
   errors: state.errors
 });
 
 export default connect(
   mapStateToProps,
-  { addBook }
-)(SearchingBooksAPI);
+  { fetchBooksAtlas, deleteBook }
+)(ManagingBooks);
+
+class Book extends Component {
+  render() {
+    return (
+      <tr>
+        <td>
+          <img 
+            className="thumbnail"
+            src={this.props.bookData.thumbnail ? 
+              this.props.bookData.thumbnail : 
+              dummyCover} 
+            alt=""
+          />
+        </td>
+        <td>
+          <h5>{this.props.bookData.title}</h5>
+          <h6>{this.props.bookData.subtitle}</h6>
+          <p>{this.props.bookData.authors}</p>
+        </td>
+        <td className="action">
+          <i 
+            className="material-icons delete-forever" 
+            onClick={() => this.props.deleteBook(this.props.bookData.apiID) }
+          >
+            delete_forever
+          </i>
+        </td>
+      </tr>
+    );
+  }
+}

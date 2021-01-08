@@ -1,3 +1,12 @@
 export const GET_ERRORS = "GET_ERRORS";
+export const SET_ERRORS = "SET_ERRORS";
 export const USER_LOADING = "USER_LOADING";
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
+export const SET_USER_BOOKS = "SET_USER_BOOKS";
+export const SET_BOOKS_ATLAS = "SET_BOOKS_ATLAS";
+export const DELETE_BOOK = "DELETE_BOOK";
+export const DELETE_FAVORITE_BOOK = "DELETE_FAVORITE_BOOK";
+export const SET_REGULAR_USERS = "SET_REGULAR_USERS";
+export const SET_ADMIN_USERS = "SET_ADMIN_USERS";
+export const MAKE_ADMIN = "MAKE_ADMIN";
+export const REMOVE_ADMIN = "REMOVE_ADMIN";

@@ -2,16 +2,15 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { addBook } from "../../actions/bookActions";
+import { fetchFavoriteBooks, deleteFavoriteBook } from "../../actions/bookActions";
 import classnames from "classnames";
-import BookAPI from "./BookAPI";
+import FavoriteBook from "./FavoriteBook";
 
-class SearchingBooksAPI extends Component {
+class MyBooks extends Component {
   constructor() {
     super();
     this.state = {
       userInput: "",
-      books: [],
       errors: {}
     };
   }
@@ -22,25 +21,19 @@ class SearchingBooksAPI extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    var xmlhttp = new XMLHttpRequest();
-    var url = `https://www.googleapis.com/books/v1/volumes?q=${this.state.userInput}&maxResults=10&key=${process.env.REACT_APP_BOOKS_API_KEY}`;
 
-    xmlhttp.onreadystatechange = () => {
-      if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-        var response = JSON.parse(xmlhttp.responseText).items.slice(0, 3);
-        this.setState({books: response});
-      }
-    };
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
   };
+  
+  componentDidMount() {
+    this.props.fetchFavoriteBooks(this.props.auth.user.id);
+  }
 
-  renderBooksAPI() {
-    return this.state.books.map((book) => (
-      <BookAPI 
-        key={book.id} 
+  renderFavoriteBooks() {
+    return this.props.auth.user.books.map(book => (
+      <FavoriteBook 
+        key={book.apiID} 
         bookData={book} 
-        addBook={this.props.addBook} 
+        deleteFavoriteBook={this.props.deleteFavoriteBook} 
       />
     ));
   }
@@ -89,7 +82,7 @@ class SearchingBooksAPI extends Component {
           </div>
 
           <div className="search-results">
-            {this.renderBooksAPI()}
+            {this.renderFavoriteBooks()}
           </div>
         </div>
       </div>
@@ -97,16 +90,19 @@ class SearchingBooksAPI extends Component {
   }
 }
 
-SearchingBooksAPI.propTypes = {
-  addBook: PropTypes.func.isRequired,
+MyBooks.propTypes = {
+  fetchFavoriteBooks: PropTypes.func.isRequired,
+  deleteFavoriteBook: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
+  auth: state.auth,
   errors: state.errors
 });
 
 export default connect(
   mapStateToProps,
-  { addBook }
-)(SearchingBooksAPI);
+  { fetchFavoriteBooks, deleteFavoriteBook }
+)(MyBooks);

@@ -3,6 +3,7 @@ import setAuthToken from "../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
 import {
   GET_ERRORS,
+  SET_ERRORS,
   SET_CURRENT_USER,
   USER_LOADING
 } from "./types";
@@ -10,7 +11,10 @@ import {
 export const registerUser = (userData, history) => dispatch => {
   axios
     .post("/users/register", userData)
-    .then(res => history.push("/login"))
+    .then(res => {
+      dispatch(setErrors({}));
+      history.push("/login");
+    })
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
@@ -49,6 +53,17 @@ export const setUserLoading = () => {
   return {
     type: USER_LOADING
   };
+};
+
+const setErrors = errors => {
+  return {
+    type: SET_ERRORS,
+    payload: errors
+  };
+};
+
+export const clearErrors = () => dispatch => {
+  dispatch(setErrors({}));
 };
 
 export const logoutUser = () => dispatch => {

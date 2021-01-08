@@ -17,6 +17,7 @@ app.use(bodyParser.json());
 
 const db = require("./config/keys").ATLAS_URI;
 
+mongoose.set('useFindAndModify', false);
 mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("MongoDB successfully connected"))
   .catch(err => console.log(err));

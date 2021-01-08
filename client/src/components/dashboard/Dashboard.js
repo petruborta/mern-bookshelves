@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
@@ -25,16 +26,8 @@ class Dashboard extends Component {
             </h4>
             <br />
             <div>
-              <button
-                className="btn"
-              >
-                Find books
-              </button>
-              <button
-                className="btn"
-              >
-                My books
-              </button>
+              <Link to="/dashboard/atlas-books" className="btn">Find books</Link>
+              <Link to="/dashboard/my-books" className="btn">My books</Link>
               {this.props.children}
             </div>
             <br />

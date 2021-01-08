@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { loginUser } from "../../actions/authActions";
+import { loginUser, clearErrors } from "../../actions/authActions";
 import classnames from "classnames";
 
 class Login extends Component {
@@ -21,14 +21,23 @@ class Login extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.auth.isAuthenticated) {
-      this.props.history.push("/dashboard");
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { errors } = nextProps;
+    
+    return errors !== prevState.errors 
+      ? { errors: errors }
+      : null;
+  }
+
+  componentDidUpdate(nextProps) {
+    const { errors } = nextProps;
+    
+    if (this.state.errors === {}) {
+      this.setState({ errors });
     }
-    if (nextProps.errors) {
-      this.setState({
-        errors: nextProps.errors
-      });
+    if (this.props.auth.isAuthenticated) {
+      this.props.clearErrors();
+      this.props.history.push("/dashboard");
     }
   }
 
@@ -124,6 +133,7 @@ class Login extends Component {
 
 Login.propTypes = {
   loginUser: PropTypes.func.isRequired,
+  clearErrors: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
@@ -135,5 +145,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { loginUser }
+  { loginUser, clearErrors }
 )(Login);

@@ -62,8 +62,17 @@ router.post("/login", (req, res) => {
         const payload = {
           id: user.id,
           name: user.name,
+          books: [],
           isAdmin: user.isAdmin
         };
+
+        if (user.isAdmin ) {
+          payload.booksAtlas = [];
+          payload.usersAtlas = {
+            regularUsers: [],
+            adminUsers: []
+          };
+        }
 
         jwt.sign(
           payload,
@@ -85,6 +94,58 @@ router.post("/login", (req, res) => {
       }
     });
   });
+});
+
+router.get("/regular", (req, res) => {
+  User.find({ isAdmin: { $eq: false } })
+    .then(users => res.json(users.map(user => {
+      return {
+        id: user.id,
+        email: user.email,
+        name: user.name
+      };
+    })))
+    .catch(err => res.status(400).json({ message: err }));
+});
+
+router.get("/admin", (req, res) => {
+  User.find({ isAdmin: { $eq: true } })
+    .then(admins => res.json(admins.map(admin => {
+      return {
+        id: admin.id,
+        email: admin.email,
+        name: admin.name
+      };
+    })))
+    .catch(err => res.status(400).json({ message: err }));
+});
+
+router.post("/make-admin", (req, res) => {
+  User.findByIdAndUpdate(
+    req.body.userID,
+    { $set: { isAdmin: true } },
+    function(err) {
+      if (err) {
+        return res.status(400).json({ message: "Couldn't promote regular user to admin" });
+      } else {
+        return res.json({ message: "Regular user successfully promoted to admin" });
+      }
+    }
+  );
+});
+
+router.post("/remove-admin", (req, res) => {
+  User.findByIdAndUpdate(
+    req.body.userID,
+    { $set: { isAdmin: false } },
+    function(err) {
+      if (err) {
+        return res.status(400).json({ message: "Couldn't demote admin to regular user" });
+      } else {
+        return res.json({ message: "Admin successfully demoted to regular user" });
+      }
+    }
+  );
 });
 
 module.exports = router;

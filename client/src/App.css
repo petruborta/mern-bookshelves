@@ -2,6 +2,14 @@
   opacity: 0;
 }
 
+select {
+  display: block;
+}
+
+select:focus {
+  outline: solid 3px lightskyblue;
+}
+
 /*=====================================
 site-header
 =====================================*/
@@ -72,6 +80,7 @@ site-header
 .book {
   width: 300px;
   margin: 1rem;
+  cursor: pointer;
 }
 
 .categories {
@@ -80,7 +89,7 @@ site-header
   font-style: italic;
   color: white;
   position: absolute;
-  margin: 0.5rem;
+  margin: 1rem;
   padding: 0.25rem 1rem;
   background-color: #eaa221;
   box-shadow: 0 0 10px 5px white;
@@ -91,6 +100,7 @@ site-header
 .book-image {
   position: relative;
   height: 425px;
+  border-radius: 10px;
   overflow: hidden;
 }
 
@@ -106,23 +116,82 @@ site-header
 
 .book-image > .material-icons {
   font-size: 40px;
-  color: dodgerblue;
-  border-radius: 50%;
   position: absolute;
   right: 1rem;
   bottom: 1rem;
-  background-color: white;
-  box-shadow: 0 2px 5px 1px grey;
   cursor: pointer;
   opacity: 0;
   transition: transform 0.25s ease-in-out,
-    opacity 0.3s ease-in-out;
+    opacity 0.3s ease-in-out,
+    color 0.3s ease-in-out,
+    background-color 0.3s ease-in-out;
 }
 
 .book-image > .material-icons:hover {
   transform: scale(1.2);
 }
 
+.book-image > .material-icons.add,
+.book-image > .material-icons.delete {
+  border-radius: 50%;
+  background-color: white;
+  box-shadow: 0 3px 8px 3px grey;
+}
+
+.book-image > .material-icons.add {
+  color: dodgerblue;
+}
+
+.book-image > .material-icons.add:hover {
+  color: rgb(30, 115, 200);
+}
+
+.book-image > .material-icons.delete {
+  color: red;
+}
+
+.book-image > .material-icons.delete:hover {
+  color: rgb(180, 0, 0);
+}
+
+.book-image > .material-icons.favorite {
+  color: red;
+  background-color: lightgray;
+  border: 3px solid lightgray;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px 3px grey;
+}
+
+.book-image > .material-icons.favorite:hover {
+  background-color: white;
+}
+
 .book:hover .material-icons {
   opacity: 1;
+}
+
+/*=====================================
+users-table
+=====================================*/
+.action {
+  text-align: center;
+  width: 10%;
+  cursor: pointer;
+}
+
+/*=====================================
+books-table
+=====================================*/
+.thumbnail {
+  height: 100px;
+  width: auto;
+}
+
+.material-icons.delete-forever {
+  font-size: 3rem;
+  transition: color 0.25s ease-in-out;
+}
+
+.material-icons.delete-forever:hover {
+  color: red;
 }

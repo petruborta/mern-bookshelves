@@ -2,80 +2,42 @@ import { Component } from "react";
 import dummyCover from "../../images/dummy_cover.png";
 
 class Book extends Component {
-  constructor(props) {
-    super(props);
-    this.state = this.extractProps(props.bookData);
-    this.addBook = props.addBook;
-  }
-
-  extractProps(data) {
+  render() {
     const {
-      id: apiID,
-      selfLink,
-      volumeInfo
-    } = data;
-
-    const {
+      categories,
+      imageLinks,
       title,
       subtitle,
       authors,
-      publisher,
       publishedDate,
-      description,
-      industryIdentifiers,
-      pageCount,
-      categories,
-      imageLinks,
-      language,
       infoLink
-    } = volumeInfo;
+    } = this.props.bookData.volumeInfo;
 
-    const identifiers = {
-      ISBN_13: industryIdentifiers[0].identifier,
-      ISBN_10: industryIdentifiers[1].identifier
-    };
-    
-    return {
-      apiID,
-      selfLink,
-      volumeInfo: {
-        title,
-        subtitle,
-        authors,
-        publisher,
-        publishedDate,
-        description,
-        industryIdentifiers: identifiers,
-        pageCount,
-        categories,
-        imageLinks,
-        language,
-        infoLink
-      }
-    };
-  }
-
-  render() {
-    let categories = (this.state.volumeInfo.categories !== undefined) ?
-      Array.from(this.state.volumeInfo.categories).join(",") :
-      "";
+    let bookCategories = (categories !== undefined) ? categories.join(", ") : "";
     
     return (
-      <div className="book">
+      <div className="book" 
+        onClick={(e) => {
+          let baseClass = e.target.className.split(" ")[0];
+          if (baseClass !== "material-icons") {
+            window.open(infoLink, "_blank"); 
+          }
+        }}
+      >
         <div className="book-image">
-          <span className={`categories ${(categories === "") ? "invisible" : ""}`}>{categories}</span>
+          <span className={`categories ${(bookCategories === "") ? "invisible" : ""}`}>{categories}</span>
           <img 
-            src={this.state.volumeInfo.imageLinks ? 
-              this.state.volumeInfo.imageLinks.thumbnail : 
+            src={imageLinks ? 
+              imageLinks.thumbnail : 
               dummyCover} 
             alt=""
           />
-          <span className="material-icons" onClick={() => this.addBook(this.state)}>add_circle</span>
+          {this.props.children}
         </div>
         <div className="book-description">
-          <h5>{this.state.volumeInfo.title}</h5>
-          <h6>{this.state.volumeInfo.subtitle}</h6>
-          <p>By {this.state.volumeInfo.authors} · {this.state.volumeInfo.publishedDate.split('-')[0]}</p>
+          <h5>{title}</h5>
+          <h6>{subtitle}</h6>
+          <p>By {authors.join(", ")} · {publishedDate.split('-')[0]}</p>
         </div>
       </div>
     );

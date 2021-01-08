@@ -15,7 +15,11 @@ import Login from "./components/auth/Login";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import Dashboard from "./components/dashboard/Dashboard";
 import AdminDashboard from "./components/dashboard/AdminDashboard";
-import SearchingBooksAPI from "./components/layout/SearchingBooksAPI"
+import SearchingBooksAPI from "./components/layout/SearchingBooksAPI";
+import MyBooks from "./components/layout/MyBooks";
+import SearchingBooksAtlas from "./components/layout/SearchingBooksAtlas";
+import ManagingBooks from "./components/layout/ManagingBooks";
+import ManagingAdmins from "./components/layout/ManagingAdmins";
 import Error from "./components/error/Error";
 
 require('dotenv').config();
@@ -46,7 +50,11 @@ class App extends Component {
               <Route path="/register" component={Register} />
               <Route path="/login" component={Login} />
               <PrivateRoute exact path="/dashboard" component={[Dashboard, AdminDashboard]} />
-              <Route path="/dashboard/api-books" component={SearchingBooksAPI} />
+              <PrivateRoute path="/dashboard/api-books" component={SearchingBooksAPI} />
+              <PrivateRoute path="/dashboard/my-books" component={MyBooks} />
+              <PrivateRoute path="/dashboard/atlas-books" component={SearchingBooksAtlas} />
+              <PrivateRoute path="/dashboard/manage-books" component={ManagingBooks} />
+              <PrivateRoute path="/dashboard/manage-admins" component={ManagingAdmins} />
               <Route path="*" component={Error} />
             </Switch>
           </div>
