@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { fetchRegularUsers, fetchAdminUsers, makeAdmin, removeAdmin } from "../../actions/userActions";
-import classnames from "classnames";
 import UserRegular from "./UserRegular";
 import UserAdmin from "./UserAdmin";
 
@@ -13,43 +12,52 @@ class ManagingAdmins extends Component {
     this.state = {
       userInput: "",
       userType: "default",
-      errors: {}
+      searchOption: "name",
+      users: []
     };
   }
 
-  componentDidMount() {
-    this.props.fetchRegularUsers();
-    this.props.fetchAdminUsers();
-  }
-
   onChange = e => {
-    this.setState({ [e.target.id]: e.target.value });
+    const {
+      name: changedProperty,
+      value: newValue
+    } = e.target;
+
+    this.setState({ [changedProperty]: newValue });
   };
-
-  onSubmit = e => {
-    e.preventDefault();
-
-  };
-
-  onUserTypeChange = e => {
-    this.setState({ userType: e.target.value });
-  };
-
-  renderUsers() {
-    const { adminUsers, regularUsers } = this.props.auth.user.usersAtlas;
-    
-    switch(this.state.userType) {
-      case "regular-users":
-        return this.createUserComponents(regularUsers, UserRegular, this.props.makeAdmin);
-      case "admin-users":
-        return this.createUserComponents(adminUsers, UserAdmin, this.props.removeAdmin);
-      default:
-        return (null);
-    }
-  }
   
-  createUserComponents(users, UserType, funcBody) {
-    return users.map(user => (
+  componentDidMount() {
+    const { user } = this.props.auth;
+    
+    this.props.fetchRegularUsers();
+    this.props.fetchAdminUsers(user.id);
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (prevState.userType === "default") return null;
+
+    const { user } = nextProps.auth;
+
+    const isNotEmpty = prop => prop !== "";
+    const filter = (users, { searchOption, userInput }) => {
+      const regExp = new RegExp(userInput.trim(), "i");
+
+      return users.filter(user => 
+        user[searchOption].match(regExp)
+      );
+    };
+
+    const nextUsers = isNotEmpty(prevState.userInput) 
+      ? filter(user.usersAtlas[prevState.userType], prevState)
+      : user.usersAtlas[prevState.userType];
+    
+    return nextUsers !== prevState.users
+      ? { users: nextUsers }
+      : null;
+  }
+
+  createUserComponents(UserType, funcBody) {
+    return this.state.users.map(user => (
       <UserType
         key={user.id}
         userData={{
@@ -62,9 +70,18 @@ class ManagingAdmins extends Component {
     )); 
   }
 
-  render() {
-    const { errors } = this.state;
+  renderUsers() {  
+    switch(this.state.userType) {
+      case "regularUsers":
+        return this.createUserComponents(UserRegular, this.props.makeAdmin);
+      case "adminUsers":
+        return this.createUserComponents(UserAdmin, this.props.removeAdmin);
+      default:
+        return null;
+    }
+  }
 
+  render() {
     return(
       <div className="container">
         <div style={{ marginTop: "4rem" }} className="row">
@@ -73,49 +90,54 @@ class ManagingAdmins extends Component {
               <i className="material-icons left">keyboard_backspace</i>
               Back to dashboard
             </Link>
-            <form noValidate onSubmit={this.onSubmit}>
-              <div className="input-field col s12">
-                <input
-                  onChange={this.onChange}
-                  value={this.state.userInput}
-                  error={errors.userInput}
-                  id="userInput"
-                  type="text"
-                  className={classnames("", {
-                    invalid: errors.userInput
-                  })}
-                />
+
+            <form>
+              <div className="col s12">
                 <label htmlFor="userInput">Search for...</label>
-                <span className="red-text">{errors.password2}</span>
+                <input
+                  type="text"
+                  name="userInput"
+                  value={this.state.userInput}
+                  onChange={this.onChange}
+                />
               </div>
+
               <div className="col s12" style={{ paddingLeft: "11.250px" }}>
-                <button
-                  style={{
-                    width: "150px",
-                    borderRadius: "3px",
-                    letterSpacing: "1.5px",
-                    marginTop: "1rem"
-                  }}
-                  type="submit"
-                  className="btn btn-large waves-effect waves-light hoverable blue accent-3"
-                >
-                  Search
-                </button>
+                <p>Please select where to search in:</p>
+                <label>
+                  <input 
+                    type="radio" 
+                    name="searchOption" 
+                    value="name" 
+                    checked={this.state.searchOption === "name"}
+                    onChange={this.onChange}
+                  />
+                  Name
+                </label>
+                <label>
+                  <input 
+                    type="radio" 
+                    name="searchOption" 
+                    value="email"
+                    checked={this.state.searchOption === "email"}
+                    onChange={this.onChange}
+                  />
+                  Email
+                </label>
               </div>
             </form>
           </div>
 
           <div className="select-field">
-            <label htmlFor="userType">Type:</label>
+            <label htmlFor="userType">User type:</label>
             <select 
-              name="userType" 
-              id="userType"
-              onChange={this.onUserTypeChange} 
+              name="userType"
               value={this.state.userType}
+              onChange={this.onChange}
             >
-              <option value="default">Select type</option>
-              <option value="regular-users">Users</option>
-              <option value="admin-users">Administrators</option>
+              <option value="default">Select user type</option>
+              <option value="regularUsers">Regular Users</option>
+              <option value="adminUsers">Admin Users</option>
             </select>
           </div>
 
@@ -144,13 +166,11 @@ ManagingAdmins.propTypes = {
   fetchAdminUsers: PropTypes.func.isRequired,
   makeAdmin: PropTypes.func.isRequired,
   removeAdmin: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth,
-  errors: state.errors
+  auth: state.auth
 });
 
 export default connect(

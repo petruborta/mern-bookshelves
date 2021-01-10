@@ -24,9 +24,9 @@ export const fetchRegularUsers = () => dispatch => {
     });
 };
 
-export const fetchAdminUsers = () => dispatch => {
+export const fetchAdminUsers = exceptedID => dispatch => {
   axios
-    .get("/users/admin")
+    .get("/users/admin", { params: { exceptedID } })
     .then(res => dispatch({
         type: SET_ADMIN_USERS,
         payload: res.data
@@ -42,6 +42,10 @@ export const fetchAdminUsers = () => dispatch => {
 };
 
 export const makeAdmin = userID => dispatch => {
+  const confirm = window.confirm("Promote this regular user to admin?");
+  
+  if (!confirm) return;
+
   axios
     .post("/users/make-admin", { userID })
     .then(res => {
@@ -61,6 +65,10 @@ export const makeAdmin = userID => dispatch => {
 };
 
 export const removeAdmin = userID => dispatch => {
+  const confirm = window.confirm("Demote this admin to regular user?");
+  
+  if (!confirm) return;
+
   axios
     .post("/users/remove-admin", { userID })
     .then(res => {

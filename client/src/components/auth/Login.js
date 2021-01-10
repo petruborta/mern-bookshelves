@@ -16,6 +16,8 @@ class Login extends Component {
   }
 
   componentDidMount() {
+    this.props.clearErrors();
+    
     if (this.props.auth.isAuthenticated) {
       this.props.history.push("/dashboard");
     }
@@ -75,7 +77,8 @@ class Login extends Component {
               </p>
             </div>
             <form noValidate onSubmit={this.onSubmit}>
-              <div className="input-field col s12">
+              <div className="col s12">
+                <label htmlFor="email">Email</label>
                 <input
                   onChange={this.onChange}
                   value={this.state.email}
@@ -86,13 +89,13 @@ class Login extends Component {
                     invalid: errors.email || errors.emailnotfound
                   })}
                 />
-                <label htmlFor="email">Email</label>
                 <span className="red-text">
                   {errors.email}
                   {errors.emailnotfound}
                 </span>
               </div>
-              <div className="input-field col s12">
+              <div className="col s12">
+                <label htmlFor="password">Password</label>
                 <input
                   onChange={this.onChange}
                   value={this.state.password}
@@ -103,7 +106,6 @@ class Login extends Component {
                     invalid: errors.password || errors.passwordincorrect
                   })}
                 />
-                <label htmlFor="password">Password</label>
                 <span className="red-text">
                   {errors.password}
                   {errors.passwordincorrect}

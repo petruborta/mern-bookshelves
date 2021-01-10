@@ -1,20 +1,13 @@
 import React, { Component } from "react";
 import Book from "./Book";
-import { extractProps } from "../../actions/bookActions";
 
 class BookApi extends Component {
-  constructor(props) {
-    super(props);
-    this.state = extractProps(props.bookData);
-    this.addBook = props.addBook;
-  }
-
-  render() {
+  render() { 
     return(
-      <Book bookData = {this.state}>
+      <Book bookData = {this.props.bookData}>
         <span 
           className="material-icons add" 
-          onClick={() => this.addBook(this.state)}
+          onClick={() => this.props.addBook(this.props.bookData)}
         >
           add_circle
         </span>

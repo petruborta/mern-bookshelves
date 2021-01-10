@@ -3,6 +3,9 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../config/keys");
+const ObjectID = require("mongoose").Types.ObjectId;
+
+const rootAdminID = require("../config/keys").rootAdminID;
 
 const validateRegisterInput = require("../validation/register");
 const validateLoginInput = require("../validation/login");
@@ -25,7 +28,8 @@ router.post("/register", (req, res) => {
         email: req.body.email,
         password: req.body.password,
         isAdmin: false,
-        books: []
+        books: [],
+        bookCategories: []
       });
 
       bcrypt.genSalt(10, (err, salt) => {
@@ -63,6 +67,7 @@ router.post("/login", (req, res) => {
           id: user.id,
           name: user.name,
           books: [],
+          bookCategories: [],
           isAdmin: user.isAdmin
         };
 
@@ -109,7 +114,13 @@ router.get("/regular", (req, res) => {
 });
 
 router.get("/admin", (req, res) => {
-  User.find({ isAdmin: { $eq: true } })
+  User.find({ 
+      _id: { $nin: [
+        new ObjectID(req.query.exceptedID),
+        new ObjectID(rootAdminID)
+      ]},
+      isAdmin: { $eq: true }
+    })
     .then(admins => res.json(admins.map(admin => {
       return {
         id: admin.id,
@@ -126,9 +137,9 @@ router.post("/make-admin", (req, res) => {
     { $set: { isAdmin: true } },
     function(err) {
       if (err) {
-        return res.status(400).json({ message: "Couldn't promote regular user to admin" });
+        return res.status(400).json({ message: "Couldn't promote regular user to admin." });
       } else {
-        return res.json({ message: "Regular user successfully promoted to admin" });
+        return res.json({ message: "Regular user successfully promoted to admin!" });
       }
     }
   );
@@ -140,9 +151,9 @@ router.post("/remove-admin", (req, res) => {
     { $set: { isAdmin: false } },
     function(err) {
       if (err) {
-        return res.status(400).json({ message: "Couldn't demote admin to regular user" });
+        return res.status(400).json({ message: "Couldn't demote admin to regular user." });
       } else {
-        return res.json({ message: "Admin successfully demoted to regular user" });
+        return res.json({ message: "Admin successfully demoted to regular user!" });
       }
     }
   );

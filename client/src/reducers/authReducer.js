@@ -19,6 +19,14 @@ const initialState = {
   loading: false
 };
 
+const getBookCategories = books => {
+  const categories = books
+    .map(book => book.volumeInfo.categories)
+    .filter(category => category !== "");
+
+  return [...new Set(categories)];
+};
+
 const filterAtlasBooks = (booksAtlas, bookToBeDeleted) => {
   return booksAtlas.filter(book => book.apiID !== bookToBeDeleted);
 };
@@ -79,31 +87,38 @@ export default function authReducer(state = initialState, action) {
         ...state,
         user: {
           ...state.user,
-          books: action.payload
+          books: action.payload,
+          bookCategories: getBookCategories(action.payload)
         }
-      }
+      };
     case SET_BOOKS_ATLAS:
       return {
         ...state,
         user: {
           ...state.user,
-          booksAtlas: action.payload
+          booksAtlas: action.payload,
+          bookCategories: getBookCategories(action.payload)
         }
-      }
+      };
     case DELETE_BOOK:
+      const filteredAtlasBooks = filterAtlasBooks(state.user.booksAtlas, action.payload);
       return {
         ...state,
         user: {
           ...state.user,
-          booksAtlas: filterAtlasBooks(state.user.booksAtlas, action.payload)
+          booksAtlas: filteredAtlasBooks,
+          bookCategories: getBookCategories(filteredAtlasBooks)
         }
       };
     case DELETE_FAVORITE_BOOK:
+      const filteredUserBooks = filterUserBooks(state.user.books, action.payload);
+
       return {
         ...state,
         user: {
           ...state.user,
-          books: filterUserBooks(state.user.books, action.payload)
+          books: filteredUserBooks,
+          bookCategories: getBookCategories(filteredUserBooks)
         }
       };
     case SET_REGULAR_USERS:

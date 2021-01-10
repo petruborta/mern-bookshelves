@@ -11,10 +11,9 @@ export const fetchBooksAtlas = () => dispatch => {
   axios
     .get("/books/")
     .then(res => {
-      const booksAtlas = extractBooksAtlasData(res.data);
       dispatch({
         type: SET_BOOKS_ATLAS,
-        payload: booksAtlas
+        payload: res.data
       });
     })
     .catch(err => {
@@ -40,6 +39,10 @@ export const addBook = bookData => dispatch => {
 };
 
 export const deleteBook = apiID => dispatch => {
+  const confirm = window.confirm("Remove this book from database?");
+  
+  if (!confirm) return;
+  
   axios
     .delete("/books/delete-book", { data: { apiID } })
     .then(res => {
@@ -75,8 +78,8 @@ export const fetchFavoriteBooks = userID => dispatch => {
   axios
     .get("/books/fetch-favorite-books", { params: { userID } })
     .then(res => dispatch({
-      type: SET_USER_BOOKS,
-      payload: res.data
+        type: SET_USER_BOOKS,
+        payload: res.data
     }))
     .catch(err => {
       alert(err.response.data.message);
@@ -88,6 +91,11 @@ export const fetchFavoriteBooks = userID => dispatch => {
 };
 
 export const deleteFavoriteBook = (apiID, userID) => dispatch => {
+  const confirm = window.confirm("Remove this book from favorites?");
+  if (!confirm) {
+    return;
+  }
+
   axios
     .delete("/books/delete-favorite-book", { data: { apiID, userID } })
     .then(res => {
@@ -106,7 +114,7 @@ export const deleteFavoriteBook = (apiID, userID) => dispatch => {
     });
 };
 
-export const extractProps = (data) => {
+export const extractPropsBookAPI = (data) => {
   const {
     id: apiID,
     selfLink,
@@ -128,10 +136,22 @@ export const extractProps = (data) => {
     infoLink
   } = volumeInfo;
 
-  const identifiers = {
-    ISBN_13: industryIdentifiers[0].identifier,
-    ISBN_10: industryIdentifiers[1].identifier
-  };
+  const authorsString = authors
+    ? authors.join(", ")
+    : "";
+  
+  const identifiers = industryIdentifiers
+    ? {
+      [industryIdentifiers[0].type]: industryIdentifiers[0].identifier,
+      [industryIdentifiers[1] && industryIdentifiers[1].type]: industryIdentifiers[1] && industryIdentifiers[1].identifier
+    } : {
+      ISBN_13: "",
+      ISBN_10: ""
+    };
+  
+  const bookCategories = categories
+    ? categories[0] 
+    : "";
   
   return {
     apiID,
@@ -139,40 +159,16 @@ export const extractProps = (data) => {
     volumeInfo: {
       title,
       subtitle,
-      authors,
+      authors: authorsString,
       publisher,
       publishedDate,
       description,
       industryIdentifiers: identifiers,
       pageCount,
-      categories,
+      categories: bookCategories,
       imageLinks,
       language,
       infoLink
     }
   };
-};
-
-const extractBooksAtlasData = (books) => {
-  return books.map(book => {
-    const {
-      apiID,
-      volumeInfo
-    } = book;
-    
-    const {
-      imageLinks,
-      authors,
-      title,
-      subtitle
-    } = volumeInfo;
-    
-    return { 
-      apiID,
-      thumbnail: imageLinks.thumbnail,
-      authors: authors.join(","),
-      title,
-      subtitle
-    };
-  });
 };

@@ -4,20 +4,14 @@ import { connect } from "react-redux";
 import Book from "./Book";
 
 class FavoriteBook extends Component {
-  constructor(props) {
-    super(props);
-    this.state = props.bookData;
-    this.deleteFavoriteBook = props.deleteFavoriteBook;
-  }
-
   render() { 
     const { user } = this.props.auth;
 
     return(
-      <Book bookData = {this.state}>
+      <Book bookData = {this.props.bookData}>
         <span 
           className="material-icons delete" 
-          onClick={() => this.deleteFavoriteBook(this.state.apiID, user.id)}
+          onClick={() => this.props.deleteFavoriteBook(this.props.bookData.apiID, user.id)}
         >
           cancel
         </span>

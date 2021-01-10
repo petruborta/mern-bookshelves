@@ -14,12 +14,12 @@ router.post("/add-book", (req, res) => {
   Book.findOne({ apiID: req.body.apiID })
     .then(book => {
       if (book) {
-        return res.status(400).json({ message: "Book already exists in database" });
+        return res.status(400).json({ message: "Book already exists in database." });
       } else {
         const newBook = new Book(Object.assign({}, req.body));
         newBook
           .save()
-          .then(() => res.json({ message: "Book successfully added to database" }))
+          .then(() => res.json({ message: "Book successfully added to database!" }))
           .catch(err => console.log(err));
       }
     }
@@ -43,7 +43,7 @@ router.delete("/delete-book", (req, res) => {
           }
         );
 
-        return res.json({ message: "Book successfully removed from database" });
+        return res.json({ message: "Book successfully removed from database!" });
       }
     }
   );
@@ -55,12 +55,12 @@ router.post("/add-favorite-book", (req, res) => {
     { $addToSet: { books: req.body.apiID } },
     function(err, user) {
       if (err) {
-        return res.status(400).json({ message: "Couldn't add book to your collection" });
+        return res.status(400).json({ message: "Couldn't add book to your collection." });
       } else {
         if (user.books.includes(req.body.apiID)) {
-          return res.json({ message: "Book already exists in your collection" });
+          return res.json({ message: "Book already exists in your collection." });
         } else {
-          return res.json({ message: "Book successfully added to your collection" });
+          return res.json({ message: "Book successfully added to your collection!" });
         }
       }
     }

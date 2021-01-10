@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { addBook } from "../../actions/bookActions";
+import { addBook, extractPropsBookAPI } from "../../actions/bookActions";
 import classnames from "classnames";
 import BookAPI from "./BookAPI";
 
@@ -10,6 +10,7 @@ class SearchingBooksAPI extends Component {
   constructor() {
     super();
     this.state = {
+      maxResults: 5,
       userInput: "",
       books: [],
       errors: {}
@@ -17,18 +18,47 @@ class SearchingBooksAPI extends Component {
   }
 
   onChange = e => {
-    this.setState({ [e.target.id]: e.target.value });
+    const {
+      name: changedProperty,
+      value: newValue
+    } = e.target;
+
+    if (changedProperty === "maxResults") {
+      this.setState({ 
+        [changedProperty]: newValue > 40 
+          ? 40 : newValue < 1 
+            ? 1 : newValue 
+      });
+
+      return;
+    }
+
+    this.setState({ [changedProperty]: newValue });
   };
 
   onSubmit = e => {
     e.preventDefault();
+    if (!this.state.userInput.trim()) {
+      this.setState({ 
+        userInput: "",
+        errors: { noinput: "Invalid search input" }
+      });
+      return;
+    }
+
+    this.setState({ 
+      books: [],
+      errors: {}
+    });
+    const { userInput, maxResults} = this.state;
+    
     var xmlhttp = new XMLHttpRequest();
-    var url = `https://www.googleapis.com/books/v1/volumes?q=${this.state.userInput}&maxResults=10&key=${process.env.REACT_APP_BOOKS_API_KEY}`;
+    var url = `https://www.googleapis.com/books/v1/volumes?q=${userInput}&maxResults=${maxResults}&key=${process.env.REACT_APP_BOOKS_API_KEY}`;
 
     xmlhttp.onreadystatechange = () => {
       if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-        var response = JSON.parse(xmlhttp.responseText).items.slice(0, 3);
-        this.setState({books: response});
+        var response = JSON.parse(xmlhttp.responseText).items;
+        this.setState({ books: response });
       }
     };
     xmlhttp.open("GET", url, true);
@@ -36,13 +66,17 @@ class SearchingBooksAPI extends Component {
   };
 
   renderBooksAPI() {
-    return this.state.books.map((book) => (
-      <BookAPI 
-        key={book.id} 
-        bookData={book} 
-        addBook={this.props.addBook} 
-      />
-    ));
+    return this.state.books.map((book) => {
+      const bookData = extractPropsBookAPI(book);
+
+      return (
+        <BookAPI 
+          key={book.id} 
+          bookData={bookData} 
+          addBook={this.props.addBook} 
+        />
+      );
+    });
   }
 
   render() {
@@ -57,19 +91,28 @@ class SearchingBooksAPI extends Component {
               Back to dashboard
             </Link>
             <form noValidate onSubmit={this.onSubmit}>
-              <div className="input-field col s12">
-                <input
+              <div className="col s3">
+                <label htmlFor="maxResults">Max results (40):</label>
+                <input 
+                  type="text" 
+                  name="maxResults" 
+                  value={this.state.maxResults}
                   onChange={this.onChange}
-                  value={this.state.userInput}
-                  error={errors.userInput}
-                  id="userInput"
+                />
+              </div>
+              <div className="col s12">
+                <label htmlFor="userInput">Search for...</label>
+                <input
                   type="text"
+                  name="userInput"
+                  value={this.state.userInput}
+                  onChange={this.onChange}
+                  error={errors.noinput}
                   className={classnames("", {
-                    invalid: errors.userInput
+                    invalid: errors.noinput
                   })}
                 />
-                <label htmlFor="userInput">Search for...</label>
-                <span className="red-text">{errors.password2}</span>
+                <span className="red-text">{errors.noinput}</span>
               </div>
               <div className="col s12" style={{ paddingLeft: "11.250px" }}>
                 <button

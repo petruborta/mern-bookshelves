@@ -4,20 +4,14 @@ import { connect } from "react-redux";
 import Book from "./Book";
 
 class BookAtlas extends Component {
-  constructor(props) {
-    super(props);
-    this.state = props.bookData;
-    this.addFavoriteBook = props.addFavoriteBook;
-  }
-
   render() {
     const { user } = this.props.auth;
 
     return(
-      <Book bookData = {this.state}>
+      <Book bookData = {this.props.bookData}>
         <span 
           className="material-icons favorite" 
-          onClick={() => this.addFavoriteBook(this.state.apiID, user.id)}
+          onClick={() => this.props.addFavoriteBook(this.props.bookData.apiID, user.id)}
         >
           favorite
         </span>

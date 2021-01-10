@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { fetchFavoriteBooks, deleteFavoriteBook } from "../../actions/bookActions";
-import classnames from "classnames";
 import FavoriteBook from "./FavoriteBook";
 
 class MyBooks extends Component {
@@ -11,36 +10,84 @@ class MyBooks extends Component {
     super();
     this.state = {
       userInput: "",
-      errors: {}
+      bookCategory: "default",
+      searchOption: "title",
+      favoriteBooks: []
     };
   }
 
   onChange = e => {
-    this.setState({ [e.target.id]: e.target.value });
+    const { 
+      name: changedProperty, 
+      value: newValue
+    } = e.target;
+
+    this.setState({ [changedProperty]: newValue });
   };
 
-  onSubmit = e => {
-    e.preventDefault();
-
-  };
-  
   componentDidMount() {
     this.props.fetchFavoriteBooks(this.props.auth.user.id);
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { user } = nextProps.auth;
+
+    const isNotEmpty = prop => prop !== "";
+    const filter = (books, { searchOption, userInput }) => {
+      const regExp = new RegExp(userInput.trim(), "i");
+
+      return books.filter(book => 
+        book.volumeInfo[searchOption].match(regExp)
+      );
+    };
+
+    const nextfavoriteBooks = isNotEmpty(prevState.userInput)
+      ? filter(user.books, prevState)
+      : user.books;
+
+    return nextfavoriteBooks !== prevState.favoriteBooks
+      ? { favoriteBooks: nextfavoriteBooks }
+      : null;
+  }
+
+  renderBookCategories() {
+    const { user } = this.props.auth;
+    let keyValue = 0;
+
+    return user.bookCategories
+      .map(category => (
+        <option 
+          key={keyValue++} 
+          value={category}
+        >
+          {category}
+        </option>
+      ));
+  }
+
+  bookFallsIntoTheSelectedCategory(book) {
+    return book.volumeInfo.categories === this.state.bookCategory;
+  }
+
+  noSelectedCategory() {
+    return this.state.bookCategory === "default";
+  }
+
   renderFavoriteBooks() {
-    return this.props.auth.user.books.map(book => (
-      <FavoriteBook 
-        key={book.apiID} 
-        bookData={book} 
-        deleteFavoriteBook={this.props.deleteFavoriteBook} 
-      />
-    ));
+    return this.state.favoriteBooks
+      .filter(book => 
+        this.bookFallsIntoTheSelectedCategory(book) 
+        || this.noSelectedCategory())
+      .map(book => (
+        <FavoriteBook 
+          key={book.apiID} 
+          bookData={book} 
+          deleteFavoriteBook={this.props.deleteFavoriteBook} 
+        />
+      ));
   }
 
   render() {
-    const { errors } = this.state;
-
     return(
       <div className="container">
         <div style={{ marginTop: "4rem" }} className="row">
@@ -49,36 +96,57 @@ class MyBooks extends Component {
               <i className="material-icons left">keyboard_backspace</i>
               Back to dashboard
             </Link>
-            <form noValidate onSubmit={this.onSubmit}>
-              <div className="input-field col s12">
-                <input
-                  onChange={this.onChange}
-                  value={this.state.userInput}
-                  error={errors.userInput}
-                  id="userInput"
-                  type="text"
-                  className={classnames("", {
-                    invalid: errors.userInput
-                  })}
-                />
+            <Link to="/dashboard/atlas-books" className="btn waves-effect waves-light hoverable blue accent-3">
+              Add more books
+            </Link>
+            
+            <form>
+              <div className="col s12">
                 <label htmlFor="userInput">Search for...</label>
-                <span className="red-text">{errors.password2}</span>
+                <input
+                  type="text"
+                  name="userInput"
+                  value={this.state.userInput}
+                  onChange={this.onChange}
+                />
               </div>
+
               <div className="col s12" style={{ paddingLeft: "11.250px" }}>
-                <button
-                  style={{
-                    width: "150px",
-                    borderRadius: "3px",
-                    letterSpacing: "1.5px",
-                    marginTop: "1rem"
-                  }}
-                  type="submit"
-                  className="btn btn-large waves-effect waves-light hoverable blue accent-3"
-                >
-                  Search
-                </button>
+                <p>Please select where to search in:</p>
+                <label>
+                  <input 
+                    type="radio" 
+                    name="searchOption" 
+                    value="title" 
+                    checked={this.state.searchOption === "title"} 
+                    onChange={this.onChange}
+                  /> 
+                  Title
+                </label>
+                <label>
+                  <input 
+                    type="radio" 
+                    name="searchOption" 
+                    value="authors" 
+                    checked={this.state.searchOption === "authors"} 
+                    onChange={this.onChange}
+                  /> 
+                  Authors
+                </label>
               </div>
             </form>
+          </div>
+
+          <div className="select-field">
+            <label htmlFor="bookCategory">Book category:</label>
+            <select 
+              name="bookCategory" 
+              value={this.state.bookCategory} 
+              onChange={this.onChange}
+            >
+              <option value="default">Select book category</option>
+              {this.renderBookCategories()}
+            </select>
           </div>
 
           <div className="search-results">
@@ -93,13 +161,11 @@ class MyBooks extends Component {
 MyBooks.propTypes = {
   fetchFavoriteBooks: PropTypes.func.isRequired,
   deleteFavoriteBook: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth,
-  errors: state.errors
+  auth: state.auth
 });
 
 export default connect(

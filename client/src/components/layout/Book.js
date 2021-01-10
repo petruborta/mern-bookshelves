@@ -4,40 +4,46 @@ import dummyCover from "../../images/dummy_cover.png";
 class Book extends Component {
   render() {
     const {
-      categories,
-      imageLinks,
       title,
       subtitle,
       authors,
+      categories,
+      imageLinks,
       publishedDate,
       infoLink
     } = this.props.bookData.volumeInfo;
 
-    let bookCategories = (categories !== undefined) ? categories.join(", ") : "";
+    const publishedYear = publishedDate
+      ? publishedDate.split('-')[0]
+      : "";
     
+    const openInNewWindow = (e) => {
+      let baseClass = e.target.className.split(" ")[0];
+
+      if (baseClass !== "material-icons") {
+        window.open(infoLink, "_blank"); 
+      }
+    };
+
+    const hideIfNoCategories = () => 
+      categories === "" ? " invisible" : "";
+
+    const getBookCover = () => 
+      imageLinks ? imageLinks.thumbnail : dummyCover;
+
     return (
       <div className="book" 
-        onClick={(e) => {
-          let baseClass = e.target.className.split(" ")[0];
-          if (baseClass !== "material-icons") {
-            window.open(infoLink, "_blank"); 
-          }
-        }}
+        onClick={(e) => openInNewWindow(e)}
       >
         <div className="book-image">
-          <span className={`categories ${(bookCategories === "") ? "invisible" : ""}`}>{categories}</span>
-          <img 
-            src={imageLinks ? 
-              imageLinks.thumbnail : 
-              dummyCover} 
-            alt=""
-          />
+          <span className={"categories" + hideIfNoCategories()}>{categories}</span>
+          <img src={getBookCover()} alt="" />
           {this.props.children}
         </div>
         <div className="book-description">
-          <h5>{title}</h5>
+          <h5><b>{title}</b></h5>
           <h6>{subtitle}</h6>
-          <p>By {authors.join(", ")} · {publishedDate.split('-')[0]}</p>
+          <p>{authors && "By "}<b>{authors}</b>{authors && publishedYear && " · "}{publishedYear}</p>
         </div>
       </div>
     );

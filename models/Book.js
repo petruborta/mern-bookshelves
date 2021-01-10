@@ -7,16 +7,16 @@ const BookSchema = new Schema({
   volumeInfo: {
     title: String,
     subtitle: String,
-    authors: Array,
+    authors: String,
     publisher: String,
-    publishedDate: Date,
+    publishedDate: String,
     description: String,
     industryIdentifiers: {
       ISBN_13: String,
       ISBN_10: String
     },
     pageCount: Number,
-    categories: Array,
+    categories: String,
     imageLinks: {
       smallThumbnail: String,
       thumbnail: String
