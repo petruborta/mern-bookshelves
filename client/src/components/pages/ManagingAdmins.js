@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { fetchRegularUsers, fetchAdminUsers, makeAdmin, removeAdmin } from "../../actions/userActions";
-import UserRegular from "./UserRegular";
-import UserAdmin from "./UserAdmin";
+import RegularUser from "../user/RegularUser";
+import AdminUser from "../user/AdminUser";
 
 class ManagingAdmins extends Component {
   constructor(props) {
@@ -73,9 +73,9 @@ class ManagingAdmins extends Component {
   renderUsers() {  
     switch(this.state.userType) {
       case "regularUsers":
-        return this.createUserComponents(UserRegular, this.props.makeAdmin);
+        return this.createUserComponents(RegularUser, this.props.makeAdmin);
       case "adminUsers":
-        return this.createUserComponents(UserAdmin, this.props.removeAdmin);
+        return this.createUserComponents(AdminUser, this.props.removeAdmin);
       default:
         return null;
     }

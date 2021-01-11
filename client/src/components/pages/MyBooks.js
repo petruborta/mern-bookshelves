@@ -2,23 +2,23 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { fetchBooksAtlas, addFavoriteBook } from "../../actions/bookActions";
-import BookAtlas from "./BookAtlas";
+import { fetchFavoriteBooks, deleteFavoriteBook } from "../../actions/bookActions";
+import FavoriteBook from "../book/FavoriteBook";
 
-class SearchingBooksAtlas extends Component {
+class MyBooks extends Component {
   constructor() {
     super();
     this.state = {
       userInput: "",
       bookCategory: "default",
       searchOption: "title",
-      booksAtlas: []
+      favoriteBooks: []
     };
   }
 
   onChange = e => {
-    const {
-      name: changedProperty,
+    const { 
+      name: changedProperty, 
       value: newValue
     } = e.target;
 
@@ -26,7 +26,7 @@ class SearchingBooksAtlas extends Component {
   };
 
   componentDidMount() {
-    this.props.fetchBooksAtlas();
+    this.props.fetchFavoriteBooks(this.props.auth.user.id);
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -34,26 +34,26 @@ class SearchingBooksAtlas extends Component {
 
     const isNotEmpty = prop => prop !== "";
     const filter = (books, { searchOption, userInput }) => {
-      const regExp = new RegExp(userInput, "i");
+      const regExp = new RegExp(userInput.trim(), "i");
 
       return books.filter(book => 
         book.volumeInfo[searchOption].match(regExp)
       );
     };
 
-    const nextBooksAtlas = isNotEmpty(prevState.userInput)
-      ? filter(user.booksAtlas, prevState)
-      : user.booksAtlas;
+    const nextfavoriteBooks = isNotEmpty(prevState.userInput)
+      ? filter(user.books, prevState)
+      : user.books;
 
-    return nextBooksAtlas !== prevState.booksAtlas
-      ? { booksAtlas: nextBooksAtlas }
+    return nextfavoriteBooks !== prevState.favoriteBooks
+      ? { favoriteBooks: nextfavoriteBooks }
       : null;
   }
 
   renderBookCategories() {
     const { user } = this.props.auth;
     let keyValue = 0;
-    
+
     return user.bookCategories
       .map(category => (
         <option 
@@ -65,7 +65,7 @@ class SearchingBooksAtlas extends Component {
       ));
   }
 
-  bookFallsInTheSelectedCategory(book) {
+  bookFallsIntoTheSelectedCategory(book) {
     return book.volumeInfo.categories === this.state.bookCategory;
   }
 
@@ -73,20 +73,20 @@ class SearchingBooksAtlas extends Component {
     return this.state.bookCategory === "default";
   }
 
-  renderBooksAtlas() {  
-    return this.state.booksAtlas
-      .filter(book =>
-        this.bookFallsInTheSelectedCategory(book)
+  renderFavoriteBooks() {
+    return this.state.favoriteBooks
+      .filter(book => 
+        this.bookFallsIntoTheSelectedCategory(book) 
         || this.noSelectedCategory())
       .map(book => (
-        <BookAtlas 
+        <FavoriteBook 
           key={book.apiID} 
           bookData={book} 
-          addFavoriteBook={this.props.addFavoriteBook} 
+          deleteFavoriteBook={this.props.deleteFavoriteBook} 
         />
       ));
   }
-  
+
   render() {
     return(
       <div className="container">
@@ -96,10 +96,10 @@ class SearchingBooksAtlas extends Component {
               <i className="material-icons left">keyboard_backspace</i>
               Back to dashboard
             </Link>
-            <Link to="" className="btn waves-effect waves-light hoverable blue accent-3">
-              Suggest a book
+            <Link to="/dashboard/atlas-books" className="btn waves-effect waves-light hoverable blue accent-3">
+              Add more books
             </Link>
-
+            
             <form>
               <div className="col s12">
                 <label htmlFor="userInput">Search for...</label>
@@ -115,22 +115,22 @@ class SearchingBooksAtlas extends Component {
                 <p>Please select where to search in:</p>
                 <label>
                   <input 
-                    type="radio"
-                    name="searchOption"
+                    type="radio" 
+                    name="searchOption" 
                     value="title" 
-                    checked={this.state.searchOption === "title"}
+                    checked={this.state.searchOption === "title"} 
                     onChange={this.onChange}
-                  />
+                  /> 
                   Title
                 </label>
                 <label>
                   <input 
                     type="radio" 
-                    name="searchOption"
-                    value="authors"
-                    checked={this.state.searchOption === "authors"}
+                    name="searchOption" 
+                    value="authors" 
+                    checked={this.state.searchOption === "authors"} 
                     onChange={this.onChange}
-                  />
+                  /> 
                   Authors
                 </label>
               </div>
@@ -140,8 +140,8 @@ class SearchingBooksAtlas extends Component {
           <div className="select-field">
             <label htmlFor="bookCategory">Book category:</label>
             <select 
-              name="bookCategory"
-              value={this.state.bookCategory}
+              name="bookCategory" 
+              value={this.state.bookCategory} 
               onChange={this.onChange}
             >
               <option value="default">Select book category</option>
@@ -150,7 +150,7 @@ class SearchingBooksAtlas extends Component {
           </div>
 
           <div className="search-results">
-            {this.renderBooksAtlas()}
+            {this.renderFavoriteBooks()}
           </div>
         </div>
       </div>
@@ -158,9 +158,9 @@ class SearchingBooksAtlas extends Component {
   }
 }
 
-SearchingBooksAtlas.propTypes = {
-  fetchBooksAtlas: PropTypes.func.isRequired,
-  addFavoriteBook: PropTypes.func.isRequired,
+MyBooks.propTypes = {
+  fetchFavoriteBooks: PropTypes.func.isRequired,
+  deleteFavoriteBook: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
 
@@ -170,5 +170,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { fetchBooksAtlas, addFavoriteBook }
-)(SearchingBooksAtlas);
+  { fetchFavoriteBooks, deleteFavoriteBook }
+)(MyBooks);

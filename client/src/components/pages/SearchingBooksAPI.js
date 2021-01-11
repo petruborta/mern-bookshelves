@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { addBook, extractPropsBookAPI } from "../../actions/bookActions";
 import classnames from "classnames";
-import BookAPI from "./BookAPI";
+import BookAPI from "../book/BookAPI";
 
 class SearchingBooksAPI extends Component {
   constructor() {

@@ -2,23 +2,23 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { fetchFavoriteBooks, deleteFavoriteBook } from "../../actions/bookActions";
-import FavoriteBook from "./FavoriteBook";
+import { fetchBooksAtlas, addFavoriteBook } from "../../actions/bookActions";
+import BookAtlas from "../book/BookAtlas";
 
-class MyBooks extends Component {
+class SearchingBooksAtlas extends Component {
   constructor() {
     super();
     this.state = {
       userInput: "",
       bookCategory: "default",
       searchOption: "title",
-      favoriteBooks: []
+      booksAtlas: []
     };
   }
 
   onChange = e => {
-    const { 
-      name: changedProperty, 
+    const {
+      name: changedProperty,
       value: newValue
     } = e.target;
 
@@ -26,7 +26,7 @@ class MyBooks extends Component {
   };
 
   componentDidMount() {
-    this.props.fetchFavoriteBooks(this.props.auth.user.id);
+    this.props.fetchBooksAtlas();
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -34,26 +34,26 @@ class MyBooks extends Component {
 
     const isNotEmpty = prop => prop !== "";
     const filter = (books, { searchOption, userInput }) => {
-      const regExp = new RegExp(userInput.trim(), "i");
+      const regExp = new RegExp(userInput, "i");
 
       return books.filter(book => 
         book.volumeInfo[searchOption].match(regExp)
       );
     };
 
-    const nextfavoriteBooks = isNotEmpty(prevState.userInput)
-      ? filter(user.books, prevState)
-      : user.books;
+    const nextBooksAtlas = isNotEmpty(prevState.userInput)
+      ? filter(user.booksAtlas, prevState)
+      : user.booksAtlas;
 
-    return nextfavoriteBooks !== prevState.favoriteBooks
-      ? { favoriteBooks: nextfavoriteBooks }
+    return nextBooksAtlas !== prevState.booksAtlas
+      ? { booksAtlas: nextBooksAtlas }
       : null;
   }
 
   renderBookCategories() {
     const { user } = this.props.auth;
     let keyValue = 0;
-
+    
     return user.bookCategories
       .map(category => (
         <option 
@@ -65,7 +65,7 @@ class MyBooks extends Component {
       ));
   }
 
-  bookFallsIntoTheSelectedCategory(book) {
+  bookFallsInTheSelectedCategory(book) {
     return book.volumeInfo.categories === this.state.bookCategory;
   }
 
@@ -73,20 +73,20 @@ class MyBooks extends Component {
     return this.state.bookCategory === "default";
   }
 
-  renderFavoriteBooks() {
-    return this.state.favoriteBooks
-      .filter(book => 
-        this.bookFallsIntoTheSelectedCategory(book) 
+  renderBooksAtlas() {  
+    return this.state.booksAtlas
+      .filter(book =>
+        this.bookFallsInTheSelectedCategory(book)
         || this.noSelectedCategory())
       .map(book => (
-        <FavoriteBook 
+        <BookAtlas 
           key={book.apiID} 
           bookData={book} 
-          deleteFavoriteBook={this.props.deleteFavoriteBook} 
+          addFavoriteBook={this.props.addFavoriteBook} 
         />
       ));
   }
-
+  
   render() {
     return(
       <div className="container">
@@ -96,10 +96,10 @@ class MyBooks extends Component {
               <i className="material-icons left">keyboard_backspace</i>
               Back to dashboard
             </Link>
-            <Link to="/dashboard/atlas-books" className="btn waves-effect waves-light hoverable blue accent-3">
-              Add more books
+            <Link to="" className="btn waves-effect waves-light hoverable blue accent-3">
+              Suggest a book
             </Link>
-            
+
             <form>
               <div className="col s12">
                 <label htmlFor="userInput">Search for...</label>
@@ -115,22 +115,22 @@ class MyBooks extends Component {
                 <p>Please select where to search in:</p>
                 <label>
                   <input 
-                    type="radio" 
-                    name="searchOption" 
+                    type="radio"
+                    name="searchOption"
                     value="title" 
-                    checked={this.state.searchOption === "title"} 
+                    checked={this.state.searchOption === "title"}
                     onChange={this.onChange}
-                  /> 
+                  />
                   Title
                 </label>
                 <label>
                   <input 
                     type="radio" 
-                    name="searchOption" 
-                    value="authors" 
-                    checked={this.state.searchOption === "authors"} 
+                    name="searchOption"
+                    value="authors"
+                    checked={this.state.searchOption === "authors"}
                     onChange={this.onChange}
-                  /> 
+                  />
                   Authors
                 </label>
               </div>
@@ -140,8 +140,8 @@ class MyBooks extends Component {
           <div className="select-field">
             <label htmlFor="bookCategory">Book category:</label>
             <select 
-              name="bookCategory" 
-              value={this.state.bookCategory} 
+              name="bookCategory"
+              value={this.state.bookCategory}
               onChange={this.onChange}
             >
               <option value="default">Select book category</option>
@@ -150,7 +150,7 @@ class MyBooks extends Component {
           </div>
 
           <div className="search-results">
-            {this.renderFavoriteBooks()}
+            {this.renderBooksAtlas()}
           </div>
         </div>
       </div>
@@ -158,9 +158,9 @@ class MyBooks extends Component {
   }
 }
 
-MyBooks.propTypes = {
-  fetchFavoriteBooks: PropTypes.func.isRequired,
-  deleteFavoriteBook: PropTypes.func.isRequired,
+SearchingBooksAtlas.propTypes = {
+  fetchBooksAtlas: PropTypes.func.isRequired,
+  addFavoriteBook: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
 
@@ -170,5 +170,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { fetchFavoriteBooks, deleteFavoriteBook }
-)(MyBooks);
+  { fetchBooksAtlas, addFavoriteBook }
+)(SearchingBooksAtlas);

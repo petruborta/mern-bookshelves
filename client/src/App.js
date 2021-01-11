@@ -15,11 +15,11 @@ import Login from "./components/auth/Login";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import Dashboard from "./components/dashboard/Dashboard";
 import AdminDashboard from "./components/dashboard/AdminDashboard";
-import SearchingBooksAPI from "./components/layout/SearchingBooksAPI";
-import MyBooks from "./components/layout/MyBooks";
-import SearchingBooksAtlas from "./components/layout/SearchingBooksAtlas";
-import ManagingBooks from "./components/layout/ManagingBooks";
-import ManagingAdmins from "./components/layout/ManagingAdmins";
+import SearchingBooksAPI from "./components/pages/SearchingBooksAPI";
+import MyBooks from "./components/pages/MyBooks";
+import SearchingBooksAtlas from "./components/pages/SearchingBooksAtlas";
+import ManagingBooks from "./components/pages/ManagingBooks";
+import ManagingAdmins from "./components/pages/ManagingAdmins";
 import Error from "./components/error/Error";
 
 require('dotenv').config();
