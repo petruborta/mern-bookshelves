@@ -28,7 +28,6 @@ class UserAdmin extends Component {
       </Confirm>
     );
   }
-
 }
 
 export default UserAdmin;
