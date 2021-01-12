@@ -42,10 +42,6 @@ export const fetchAdminUsers = exceptedID => dispatch => {
 };
 
 export const makeAdmin = userID => dispatch => {
-  const confirm = window.confirm("Promote this regular user to admin?");
-  
-  if (!confirm) return;
-
   axios
     .post("/users/make-admin", { userID })
     .then(res => {
@@ -65,10 +61,6 @@ export const makeAdmin = userID => dispatch => {
 };
 
 export const removeAdmin = userID => dispatch => {
-  const confirm = window.confirm("Demote this admin to regular user?");
-  
-  if (!confirm) return;
-
   axios
     .post("/users/remove-admin", { userID })
     .then(res => {

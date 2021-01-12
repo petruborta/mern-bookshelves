@@ -6,7 +6,7 @@ class User extends Component {
       <tr>
         <td>{this.props.name}</td>
         <td>{this.props.email}</td>
-        <td className="action">
+        <td className="user-action">
           {this.props.children}
         </td>
       </tr>

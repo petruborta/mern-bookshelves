@@ -67,12 +67,12 @@ router.post("/login", (req, res) => {
           id: user.id,
           name: user.name,
           books: [],
+          booksAtlas: [],
           bookCategories: [],
           isAdmin: user.isAdmin
         };
 
         if (user.isAdmin ) {
-          payload.booksAtlas = [];
           payload.usersAtlas = {
             regularUsers: [],
             adminUsers: []

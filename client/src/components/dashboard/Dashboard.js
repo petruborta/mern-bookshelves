@@ -26,6 +26,7 @@ class Dashboard extends Component {
             </h4>
             <br />
             <div>
+              <Link to="/dashboard/suggest-book" className="btn">Suggest a book</Link>
               <Link to="/dashboard/atlas-books" className="btn">Find books</Link>
               <Link to="/dashboard/my-books" className="btn">My books</Link>
               {this.props.children}

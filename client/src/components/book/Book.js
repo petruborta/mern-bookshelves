@@ -18,9 +18,7 @@ class Book extends Component {
       : "";
     
     const openInNewWindow = (e) => {
-      let baseClass = e.target.className.split(" ")[0];
-
-      if (baseClass !== "material-icons") {
+      if (!e.target.className.includes("material-icons")) {
         window.open(infoLink, "_blank"); 
       }
     };

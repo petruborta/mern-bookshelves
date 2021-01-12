@@ -72,13 +72,13 @@ router.get("/fetch-favorite-books", (req, res) => {
     req.query.userID,
     function(err, user) {
       if (err) {
-        return res.status(400).json({ message: "Couldn't find user" });
+        return res.status(400).json({ message: "Couldn't find user." });
       } else {
         Book.find(
           { 'apiID': { $in: user.books } },
           function(err, books) {
             if (err) {
-              return res.status(400).json({ message: "Couldn't fetch user's books" });
+              return res.status(400).json({ message: "Couldn't fetch user's books." });
             } else {
               return res.json(books);
             }
@@ -95,11 +95,11 @@ router.delete("/delete-favorite-book", (req, res) => {
     { new: true },
     function(err, user) {
       if (err) {
-        return res.status(400).json({ message: "Book does not exist in your collection" });
+        return res.status(400).json({ message: "Book does not exist in your collection." });
       } else {
         return res.json({
           books: user.books,
-          message: "Book successfully removed from your collection"
+          message: "Book successfully removed from your collection!"
         });
       }
     }

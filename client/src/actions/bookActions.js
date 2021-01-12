@@ -39,10 +39,6 @@ export const addBook = bookData => dispatch => {
 };
 
 export const deleteBook = apiID => dispatch => {
-  const confirm = window.confirm("Remove this book from database?");
-  
-  if (!confirm) return;
-  
   axios
     .delete("/books/delete-book", { data: { apiID } })
     .then(res => {
@@ -91,11 +87,6 @@ export const fetchFavoriteBooks = userID => dispatch => {
 };
 
 export const deleteFavoriteBook = (apiID, userID) => dispatch => {
-  const confirm = window.confirm("Remove this book from favorites?");
-  if (!confirm) {
-    return;
-  }
-
   axios
     .delete("/books/delete-favorite-book", { data: { apiID, userID } })
     .then(res => {

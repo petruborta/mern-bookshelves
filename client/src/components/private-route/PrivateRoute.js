@@ -22,8 +22,10 @@ const PrivateRoute = ({ component, auth, ...rest }) => {
       {...rest}
       render={props => {
         if (auth.isAuthenticated) {
-          if (!auth.user.isAdmin && adminRoutes.includes(Component["WrappedComponent"].name)) {
-            return <Error message={"Access not granted"} />;
+          if (!auth.user.isAdmin 
+            && Component.hasOwnProperty("WrappedComponent") 
+            && adminRoutes.includes(Component["WrappedComponent"].name)) {
+              return <Error message={"Access denied/forbidden"} />;
           }
           else {
             return <Component {...props} />;

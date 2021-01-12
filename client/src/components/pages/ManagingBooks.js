@@ -3,11 +3,12 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { fetchBooksAtlas, deleteBook } from "../../actions/bookActions";
+import Confirm from "../layout/Confirm";
 import dummyCover from "../../images/dummy_cover.png";
 
 class ManagingBooks extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       userInput: "",
       bookCategory: "default",
@@ -203,24 +204,35 @@ class Book extends Component {
       imageLinks ? imageLinks.thumbnail : dummyCover;
     
     return (
-      <tr>
-        <td>
-          <img className="thumbnail" src={getBookCover()} alt="" />
-        </td>
-        <td>
-          <h5><b>{title}</b></h5>
-          <h6>{subtitle}</h6>
-          <p><b>{authors}</b><br />{categories}</p>
-        </td>
-        <td className="action">
-          <i 
-            className="material-icons delete-forever" 
-            onClick={() => this.props.deleteBook(apiID) }
-          >
-            delete_forever
-          </i>
-        </td>
-      </tr>
+      <Confirm 
+        title="Confirm"
+        description={{
+          prefix: "Remove",
+          main: volumeInfo.title,
+          suffix: "from database?"
+        }}
+      >
+        {confirm => (
+          <tr>
+            <td>
+              <img className="thumbnail" src={getBookCover()} alt="" />
+            </td>
+            <td>
+              <h5><b>{title}</b></h5>
+              <h6>{subtitle}</h6>
+              <p><b>{authors}</b><br />{categories}</p>
+            </td>
+            <td className="action">
+              <i 
+                className="material-icons delete-forever cursor-pointer" 
+                onClick={() => confirm(() => this.props.deleteBook(apiID))}
+              >
+                delete_forever
+              </i>
+            </td>
+          </tr>
+        )}
+      </Confirm>
     );
   }
 }

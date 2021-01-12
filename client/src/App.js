@@ -9,12 +9,14 @@ import { Provider } from "react-redux";
 import store from "./store";
 
 import Navbar from "./components/layout/Navbar";
+import Announcement from "./components/layout/Announcement";
 import Landing from "./components/layout/Landing";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import Dashboard from "./components/dashboard/Dashboard";
 import AdminDashboard from "./components/dashboard/AdminDashboard";
+import SuggestingBook from "./components/pages/SuggestingBook";
 import SearchingBooksAPI from "./components/pages/SearchingBooksAPI";
 import MyBooks from "./components/pages/MyBooks";
 import SearchingBooksAtlas from "./components/pages/SearchingBooksAtlas";
@@ -45,14 +47,19 @@ class App extends Component {
         <Router>
           <div className="App">
             <Navbar />
+            <Announcement data={{
+              title: "In development", 
+              description: "\"Suggest a book\" feature"
+            }} />
             <Switch>
               <Route exact path="/" component={Landing} />
               <Route path="/register" component={Register} />
               <Route path="/login" component={Login} />
               <PrivateRoute exact path="/dashboard" component={[Dashboard, AdminDashboard]} />
-              <PrivateRoute path="/dashboard/api-books" component={SearchingBooksAPI} />
-              <PrivateRoute path="/dashboard/my-books" component={MyBooks} />
+              <PrivateRoute path="/dashboard/suggest-book" component={SuggestingBook} />
               <PrivateRoute path="/dashboard/atlas-books" component={SearchingBooksAtlas} />
+              <PrivateRoute path="/dashboard/my-books" component={MyBooks} />
+              <PrivateRoute path="/dashboard/api-books" component={SearchingBooksAPI} />
               <PrivateRoute path="/dashboard/manage-books" component={ManagingBooks} />
               <PrivateRoute path="/dashboard/manage-admins" component={ManagingAdmins} />
               <Route path="*" component={Error} />

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-class Error extends Component {
+class SuggestingBook extends Component {
   render() {
     return (
       <div style={{ height: "75vh" }} className="container valign-wrapper">
@@ -11,7 +11,7 @@ class Error extends Component {
               <i className="material-icons left">keyboard_backspace</i>
               Back to dashboard
             </Link>
-            <h1>{this.props.message || "Page not found"}</h1>
+            <h1>Work in progress</h1>
           </div>
         </div>
       </div>
@@ -19,4 +19,4 @@ class Error extends Component {
   }
 }
 
-export default Error;
+export default SuggestingBook;

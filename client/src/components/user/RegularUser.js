@@ -1,20 +1,31 @@
 import React, { Component } from "react";
 import User from "./User";
+import Confirm from "../layout/Confirm";
 
 class UserRegular extends Component {
   render() {
+    const { id, name, email } = this.props.userData;
+
     return (
-      <User
-        name={this.props.userData.name} 
-        email={this.props.userData.email}
+      <Confirm 
+        title="Confirm"
+        description={{
+          prefix: "Promote",
+          main: name,
+          suffix: "to admin?"
+        }}
       >
-        <span 
-          className="material-icons" 
-          onClick={() => this.props.action(this.props.userData.id)}
-        >
-          person_add
-        </span>
-      </User>
+        {confirm => (
+          <User name={name}  email={email}>
+            <span 
+              className="material-icons cursor-pointer" 
+              onClick={() => confirm(() => this.props.action(id))}
+            >
+              person_add
+            </span>
+          </User>
+        )}
+      </Confirm>
     );
   }
 }

@@ -10,6 +10,10 @@ select:focus {
   outline: solid 3px lightskyblue;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 /*=====================================
 site-header
 =====================================*/
@@ -173,10 +177,9 @@ site-header
 /*=====================================
 users-table
 =====================================*/
-.action {
+.user-action {
   text-align: center;
   width: 10%;
-  cursor: pointer;
 }
 
 /*=====================================
@@ -194,4 +197,58 @@ books-table
 
 .material-icons.delete-forever:hover {
   color: red;
+}
+
+/*=====================================
+announcement
+=====================================*/
+.announcement {
+  align-items: center;
+  background-color: lightblue;
+}
+
+.announcement-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex: auto;
+}
+
+.material-icons.megaphone,
+.material-icons.close {
+  margin: 0 1rem;
+}
+
+.material-icons.megaphone {
+  font-size: 3rem;
+}
+
+/*=====================================
+modal
+=====================================*/
+.modal {
+  display: block;
+  height: 100%;
+  max-height: 100%;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+  overflow: auto;
+  z-index: 2;
+}
+
+.modal-content {
+  width: 80%;
+  max-width: 400px;
+  padding: 1rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 1px solid #888;
+  background-color: #fefefe;
+  box-shadow: 0 20px 20px -10px black;
+  transform: translate(-50%, -50%);
 }

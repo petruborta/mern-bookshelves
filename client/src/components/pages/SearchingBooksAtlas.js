@@ -73,7 +73,7 @@ class SearchingBooksAtlas extends Component {
     return this.state.bookCategory === "default";
   }
 
-  renderBooksAtlas() {  
+  renderBooksAtlas() {
     return this.state.booksAtlas
       .filter(book =>
         this.bookFallsInTheSelectedCategory(book)
@@ -96,7 +96,7 @@ class SearchingBooksAtlas extends Component {
               <i className="material-icons left">keyboard_backspace</i>
               Back to dashboard
             </Link>
-            <Link to="" className="btn waves-effect waves-light hoverable blue accent-3">
+            <Link to="/dashboard/suggest-book" className="btn waves-effect waves-light hoverable blue accent-3">
               Suggest a book
             </Link>
 

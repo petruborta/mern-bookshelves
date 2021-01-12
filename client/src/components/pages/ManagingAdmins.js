@@ -7,8 +7,8 @@ import RegularUser from "../user/RegularUser";
 import AdminUser from "../user/AdminUser";
 
 class ManagingAdmins extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       userInput: "",
       userType: "default",
