@@ -1,6 +1,6 @@
 import axios from "axios";
+import Alert from "../components/layout/Alert";
 import {
-  GET_ERRORS,
   SET_REGULAR_USERS,
   SET_ADMIN_USERS,
   MAKE_ADMIN,
@@ -16,11 +16,8 @@ export const fetchRegularUsers = () => dispatch => {
       })
     )
     .catch(err => {
-      alert(err.response.data.message);
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      })
+      const { status, data } = err.response;
+      Alert.show({ [status]: data });
     });
 };
 
@@ -33,11 +30,8 @@ export const fetchAdminUsers = exceptedID => dispatch => {
       })
     )
     .catch(err => {
-      alert(err.response.data.message);
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      })
+      const { status, data } = err.response;
+      Alert.show({ [status]: data });
     });
 };
 
@@ -45,18 +39,17 @@ export const makeAdmin = userID => dispatch => {
   axios
     .post("/users/make-admin", { userID })
     .then(res => {
-      alert(res.data.message);
       dispatch({
         type: MAKE_ADMIN,
         payload: userID
-      })
+      });
+
+      const { status, data } = res;
+      Alert.show({ [status]: data });
     })
     .catch(err => {
-      alert(err.response.data.message);
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      })
+      const { status, data } = err.response;
+      Alert.show({ [status]: data });
     });
 };
 
@@ -64,17 +57,16 @@ export const removeAdmin = userID => dispatch => {
   axios
     .post("/users/remove-admin", { userID })
     .then(res => {
-      alert(res.data.message);
       dispatch({
         type: REMOVE_ADMIN,
         payload: userID
-      })
+      });
+
+      const { status, data } = res;
+      Alert.show({ [status]: data });
     })
     .catch(err => {
-      alert(err.response.data.message);
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      })
+      const { status, data } = err.response;
+      Alert.show({ [status]: data });
     });
 };

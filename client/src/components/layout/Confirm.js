@@ -1,54 +1,63 @@
 import React, { Component } from "react";
 
 class Confirm extends Component {
-  constructor() {
-    super();
-    this.state = {
-      dialogIsOpen: false,
-      callback: null
-    }
+  static show(data) {
+    Confirm.__singletonRef.__show(data);
   }
 
-  showDialog = callback => {  
+  constructor(props) {
+    super(props);
+    this.state = {
+      dialogIsOpen: false,
+      title: "",
+      description: {},
+      callback: null
+    };
+    Confirm.__singletonRef = this;
+  }
+
+  __show = ({ title, description, callback }) => {  
     this.setState({
       dialogIsOpen: true,
-      callback: () => callback()
+      title,
+      description,
+      callback
     });
-  };
+  }
 
-  hideDialog = () => {
+  __hide = () => {
     this.setState({
       dialogIsOpen: false,
+      title: "",
+      description: {},
       callback: null
     });
-  };
+  }
 
-  confirm = () => {
+  __confirm = () => {
     this.state.callback();
-    this.hideDialog();
-  };
+    this.__hide();
+  }
 
   clickedOnModal = e => e.target.className.includes("modal");
 
   render() {
-    const { title, description } = this.props;
+    const { dialogIsOpen, title, description } = this.state;
     const { prefix, main, suffix } = description;
     
     return (
       <React.Fragment>
-        {this.props.children(this.showDialog)}
-
-        {this.state.dialogIsOpen && (
+        {dialogIsOpen && (
           <div 
             className="modal"
-            onClick={(e) => this.clickedOnModal(e) && this.hideDialog() }
+            onClick={(e) => this.clickedOnModal(e) && this.__hide() }
           >
             <div className="modal-content">
               <h5>{title}</h5>
               <p>{prefix} <b>{main}</b> {suffix}</p>
 
-              <button onClick={this.hideDialog}>Cancel</button>
-              <button onClick={this.confirm}>OK</button>
+              <button onClick={this.__hide}>Cancel</button>
+              <button onClick={this.__confirm}>OK</button>
             </div>
           </div>
         )}

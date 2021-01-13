@@ -7,25 +7,24 @@ class UserRegular extends Component {
     const { id, name, email } = this.props.userData;
 
     return (
-      <Confirm 
-        title="Confirm"
-        description={{
-          prefix: "Promote",
-          main: name,
-          suffix: "to admin?"
-        }}
-      >
-        {confirm => (
-          <User name={name}  email={email}>
-            <span 
-              className="material-icons cursor-pointer" 
-              onClick={() => confirm(() => this.props.action(id))}
-            >
-              person_add
-            </span>
-          </User>
-        )}
-      </Confirm>
+      <User name={name}  email={email}>
+        <span 
+          className="material-icons cursor-pointer" 
+          onClick={() =>
+            Confirm.show({
+              title: "Confirm",
+              description: {
+                prefix: "Promote",
+                main: name,
+                suffix: "to admin?"
+              },
+              callback: () => this.props.action(id)
+            })
+          }
+        >
+          person_add
+        </span>
+      </User>
     );
   }
 }

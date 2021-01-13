@@ -1,6 +1,6 @@
 import axios from "axios";
+import Alert from "../components/layout/Alert";
 import {
-  GET_ERRORS,
   SET_BOOKS_ATLAS,
   DELETE_BOOK,
   DELETE_FAVORITE_BOOK,
@@ -17,24 +17,21 @@ export const fetchBooksAtlas = () => dispatch => {
       });
     })
     .catch(err => {
-      alert(err.response.data.message);
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      });
+      const { status, data } = err.response;
+      Alert.show({ [status]: data });
     });
 };
 
 export const addBook = bookData => dispatch => {
   axios
     .post("/books/add-book", bookData)
-    .then(res => alert(res.data.message))
+    .then(res => {
+      const { status, data } = res;
+      Alert.show({ [status]: data });
+    })
     .catch(err => {
-      alert(err.response.data.message);
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      });
+      const { status, data } = err.response;
+      Alert.show({ [status]: data });
     });
 };
 
@@ -42,31 +39,30 @@ export const deleteBook = apiID => dispatch => {
   axios
     .delete("/books/delete-book", { data: { apiID } })
     .then(res => {
-      alert(res.data.message);
       dispatch({
         type: DELETE_BOOK,
         payload: apiID
       });
+
+      const { status, data } = res;
+      Alert.show({ [status]: data });
     })
     .catch(err => {
-      alert(err.response.data.message);
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      });
+      const { status, data } = err.response;
+      Alert.show({ [status]: data });
     });
 };
 
 export const addFavoriteBook = (apiID, userID) => dispatch => {
   axios
     .post("/books/add-favorite-book", { apiID, userID })
-    .then(res => alert(res.data.message))
+    .then(res => {
+      const { status, data } = res;
+      Alert.show({ [status]: data });
+    })
     .catch(err => {
-      alert(err.response.data.message);
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      });
+      const { status, data } = err.response;
+      Alert.show({ [status]: data });
     });
 };
 
@@ -78,11 +74,8 @@ export const fetchFavoriteBooks = userID => dispatch => {
         payload: res.data
     }))
     .catch(err => {
-      alert(err.response.data.message);
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      });
+      const { status, data } = err.response;
+      Alert.show({ [status]: data });
     });
 };
 
@@ -90,22 +83,21 @@ export const deleteFavoriteBook = (apiID, userID) => dispatch => {
   axios
     .delete("/books/delete-favorite-book", { data: { apiID, userID } })
     .then(res => {
-      alert(res.data.message);
       dispatch({
         type: DELETE_FAVORITE_BOOK,
         payload: apiID
       });
+
+      const { status, data } = res;
+      Alert.show({ [status]: data });
     })
     .catch(err => {
-      alert(err.response.data.message);
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      });
+      const { status, data } = err.response;
+      Alert.show({ [status]: data });
     });
 };
 
-export const extractPropsBookAPI = (data) => {
+export const extractPropsBookAPI = data => {
   const {
     id: apiID,
     selfLink,

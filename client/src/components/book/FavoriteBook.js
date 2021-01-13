@@ -10,25 +10,24 @@ class FavoriteBook extends Component {
     const { apiID, volumeInfo } = this.props.bookData;
 
     return(
-      <Confirm 
-        title="Confirm"
-        description={{
-          prefix: "Remove",
-          main: volumeInfo.title,
-          suffix: "from favorites?"
-        }}
-      >
-        {confirm => (
-          <Book bookData = {this.props.bookData}>
-            <span 
-              className="material-icons delete" 
-              onClick={() => confirm(() => this.props.deleteFavoriteBook(apiID, user.id))}
-            >
-              cancel
-            </span>
-          </Book>
-        )}
-      </Confirm>
+      <Book bookData = {this.props.bookData}>
+        <span 
+          className="material-icons delete" 
+          onClick={() =>
+            Confirm.show({
+              title: "Confirm",
+              description: {
+                prefix: "Remove",
+                main: volumeInfo.title,
+                suffix: "from favorites?"
+              },
+              callback: () => this.props.deleteFavoriteBook(apiID, user.id)
+            })
+          }
+        >
+          cancel
+        </span>
+      </Book>
     );
   }
 }

@@ -21,7 +21,7 @@ router.post("/register", (req, res) => {
   
   User.findOne({ email: req.body.email }).then(user => {
     if (user) {
-      return res.status(400).json({ email: "Email already exists" });
+      return res.status(409).json({ email: "Email already exists" });
     } else {
       const newUser = new User({
         name: req.body.name,
@@ -110,7 +110,7 @@ router.get("/regular", (req, res) => {
         name: user.name
       };
     })))
-    .catch(err => res.status(400).json({ message: err }));
+    .catch(err => res.status(400).json(err));
 });
 
 router.get("/admin", (req, res) => {
@@ -128,7 +128,7 @@ router.get("/admin", (req, res) => {
         name: admin.name
       };
     })))
-    .catch(err => res.status(400).json({ message: err }));
+    .catch(err => res.status(400).json(err));
 });
 
 router.post("/make-admin", (req, res) => {
@@ -137,9 +137,9 @@ router.post("/make-admin", (req, res) => {
     { $set: { isAdmin: true } },
     function(err) {
       if (err) {
-        return res.status(400).json({ message: "Couldn't promote regular user to admin." });
+        return res.status(400).json("Couldn't promote regular user to admin.");
       } else {
-        return res.json({ message: "Regular user successfully promoted to admin!" });
+        return res.json("Regular user successfully promoted to admin!");
       }
     }
   );
@@ -151,9 +151,9 @@ router.post("/remove-admin", (req, res) => {
     { $set: { isAdmin: false } },
     function(err) {
       if (err) {
-        return res.status(400).json({ message: "Couldn't demote admin to regular user." });
+        return res.status(400).json("Couldn't demote admin to regular user.");
       } else {
-        return res.json({ message: "Admin successfully demoted to regular user!" });
+        return res.json("Admin successfully demoted to regular user!");
       }
     }
   );

@@ -224,7 +224,7 @@ announcement
 }
 
 /*=====================================
-modal
+confirm
 =====================================*/
 .modal {
   display: block;
@@ -251,4 +251,26 @@ modal
   background-color: #fefefe;
   box-shadow: 0 20px 20px -10px black;
   transform: translate(-50%, -50%);
+}
+
+/*=====================================
+alert
+=====================================*/
+.alert {
+  max-width: 250px;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  top: 50px;
+  padding: 0.5rem;
+  border: 1px solid black;
+  border-radius: 10px;
+  box-shadow: 0 20px 20px -10px black;
+  transform: translateX(calc(50vw - 50%));
+  z-index: 2;
+}
+
+.alert .material-icons {
+  font-size: 40px;
 }

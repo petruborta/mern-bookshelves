@@ -10,6 +10,8 @@ import store from "./store";
 
 import Navbar from "./components/layout/Navbar";
 import Announcement from "./components/layout/Announcement";
+import Alert from "./components/layout/Alert";
+import Confirm from "./components/layout/Confirm";
 import Landing from "./components/layout/Landing";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
@@ -51,6 +53,8 @@ class App extends Component {
               title: "In development", 
               description: "\"Suggest a book\" feature"
             }} />
+            <Alert />
+            <Confirm />
             <Switch>
               <Route exact path="/" component={Landing} />
               <Route path="/register" component={Register} />
