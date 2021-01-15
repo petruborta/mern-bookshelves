@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { fetchRegularUsers, fetchAdminUsers, makeAdmin, removeAdmin } from "../../actions/userActions";
 import RegularUser from "../user/RegularUser";
 import AdminUser from "../user/AdminUser";
+import Pagination from "../layout/Pagination";
 
 class ManagingAdmins extends Component {
   constructor() {
@@ -56,33 +57,42 @@ class ManagingAdmins extends Component {
       : null;
   }
 
-  createUserComponents(UserType, funcBody) {
-    return this.state.users.map(user => (
-      <UserType
-        key={user.id}
-        userData={{
-          id: user.id,
-          name: user.name,
-          email: user.email
-        }}
-        action={funcBody}
+  createPagination(UserType, funcBody) {
+    const users = this.state.users.map(user => {
+      return {
+        id: user.id,
+        name: user.name,
+        email: user.email
+      };
+    });
+    
+    return (
+      <Pagination 
+        key={`${new Date().getTime()}`}
+        data={{
+          elements: users,
+          elementsType: UserType,
+          action: funcBody
+        }} 
       />
-    )); 
+    );
   }
 
-  renderUsers() {  
+  renderPagination() {  
     switch(this.state.userType) {
       case "regularUsers":
-        return this.createUserComponents(RegularUser, this.props.makeAdmin);
+        return this.createPagination(RegularUser, this.props.makeAdmin);
       case "adminUsers":
-        return this.createUserComponents(AdminUser, this.props.removeAdmin);
+        return this.createPagination(AdminUser, this.props.removeAdmin);
       default:
         return null;
     }
   }
 
   render() {
-    return(
+    const { userInput, userType, searchOption } = this.state;
+
+    return (
       <div className="container">
         <div style={{ marginTop: "4rem" }} className="row">
           <div className="search-form-container">
@@ -97,7 +107,7 @@ class ManagingAdmins extends Component {
                 <input
                   type="text"
                   name="userInput"
-                  value={this.state.userInput}
+                  value={userInput}
                   onChange={this.onChange}
                 />
               </div>
@@ -109,7 +119,7 @@ class ManagingAdmins extends Component {
                     type="radio" 
                     name="searchOption" 
                     value="name" 
-                    checked={this.state.searchOption === "name"}
+                    checked={searchOption === "name"}
                     onChange={this.onChange}
                   />
                   Name
@@ -119,7 +129,7 @@ class ManagingAdmins extends Component {
                     type="radio" 
                     name="searchOption" 
                     value="email"
-                    checked={this.state.searchOption === "email"}
+                    checked={searchOption === "email"}
                     onChange={this.onChange}
                   />
                   Email
@@ -132,7 +142,7 @@ class ManagingAdmins extends Component {
             <label htmlFor="userType">User type:</label>
             <select 
               name="userType"
-              value={this.state.userType}
+              value={userType}
               onChange={this.onChange}
             >
               <option value="default">Select user type</option>
@@ -141,19 +151,15 @@ class ManagingAdmins extends Component {
             </select>
           </div>
 
-          <div className={this.state.userType === "default" ? "invisible" : ""}>
-            <table>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th className="user-action">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.renderUsers()}
-              </tbody>
-            </table>
+          <div className={`table ${userType === "default" ? "invisible" : ""}`}>
+            <div className="table-header-row">
+              <div className="col1">Name</div>
+              <div className="col2">Email</div>
+              <div className="col3 action">Action</div>
+            </div>
+            <div className="users">
+              {this.renderPagination()}
+            </div>
           </div>
         </div>
       </div>

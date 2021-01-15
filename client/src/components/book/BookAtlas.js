@@ -7,11 +7,11 @@ class BookAtlas extends Component {
   render() {
     const { user } = this.props.auth;
 
-    return(
-      <Book bookData = {this.props.bookData}>
+    return (
+      <Book bookData = {this.props.data}>
         <span 
           className="material-icons favorite" 
-          onClick={() => this.props.addFavoriteBook(this.props.bookData.apiID, user.id)}
+          onClick={() => this.props.action(this.props.data.apiID, user.id)}
         >
           favorite
         </span>

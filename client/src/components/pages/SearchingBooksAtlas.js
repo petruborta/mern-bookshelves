@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { fetchBooksAtlas, addFavoriteBook } from "../../actions/bookActions";
 import BookAtlas from "../book/BookAtlas";
+import Pagination from "../layout/Pagination";
 
 class SearchingBooksAtlas extends Component {
   constructor() {
@@ -73,22 +74,28 @@ class SearchingBooksAtlas extends Component {
     return this.state.bookCategory === "default";
   }
 
-  renderBooksAtlas() {
-    return this.state.booksAtlas
+  renderPagination() {
+    const filteredBooksAtlas = this.state.booksAtlas
       .filter(book =>
         this.bookFallsInTheSelectedCategory(book)
-        || this.noSelectedCategory())
-      .map(book => (
-        <BookAtlas 
-          key={book.apiID} 
-          bookData={book} 
-          addFavoriteBook={this.props.addFavoriteBook} 
-        />
-      ));
+        || this.noSelectedCategory());
+    
+    return (
+      <Pagination 
+        key={`${new Date().getTime()}`}
+        data={{
+          elements: filteredBooksAtlas,
+          elementsType: BookAtlas,
+          action: this.props.addFavoriteBook
+        }} 
+      />
+    );
   }
   
   render() {
-    return(
+    const { userInput, bookCategory, searchOption } = this.state;
+
+    return (
       <div className="container">
         <div style={{ marginTop: "4rem" }} className="row">
           <div className="search-form-container">
@@ -106,7 +113,7 @@ class SearchingBooksAtlas extends Component {
                 <input
                   type="text"
                   name="userInput"
-                  value={this.state.userInput}
+                  value={userInput}
                   onChange={this.onChange}
                 />
               </div>
@@ -118,7 +125,7 @@ class SearchingBooksAtlas extends Component {
                     type="radio"
                     name="searchOption"
                     value="title" 
-                    checked={this.state.searchOption === "title"}
+                    checked={searchOption === "title"}
                     onChange={this.onChange}
                   />
                   Title
@@ -128,7 +135,7 @@ class SearchingBooksAtlas extends Component {
                     type="radio" 
                     name="searchOption"
                     value="authors"
-                    checked={this.state.searchOption === "authors"}
+                    checked={searchOption === "authors"}
                     onChange={this.onChange}
                   />
                   Authors
@@ -141,7 +148,7 @@ class SearchingBooksAtlas extends Component {
             <label htmlFor="bookCategory">Book category:</label>
             <select 
               name="bookCategory"
-              value={this.state.bookCategory}
+              value={bookCategory}
               onChange={this.onChange}
             >
               <option value="default">Select book category</option>
@@ -149,8 +156,8 @@ class SearchingBooksAtlas extends Component {
             </select>
           </div>
 
-          <div className="search-results">
-            {this.renderBooksAtlas()}
+          <div>
+            {this.renderPagination()}
           </div>
         </div>
       </div>

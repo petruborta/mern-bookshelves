@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { fetchBooksAtlas, deleteBook } from "../../actions/bookActions";
 import Confirm from "../layout/Confirm";
+import Pagination from "../layout/Pagination";
 import dummyCover from "../../images/dummy_cover.png";
 
 class ManagingBooks extends Component {
@@ -74,22 +75,28 @@ class ManagingBooks extends Component {
     return this.state.bookCategory === "default";
   }
 
-  renderBooksAtlas() {
-    return this.state.booksAtlas
+  renderPagination() {
+    const filteredBooksAtlas = this.state.booksAtlas
       .filter(book =>
         this.bookFallInTheSelectedCategory(book)
-        || this.noSelectedBookCategory())
-      .map((book) => (
-        <Book 
-          key={book.apiID} 
-          bookData={book} 
-          deleteBook={this.props.deleteBook} 
-        />
-      ));
+        || this.noSelectedBookCategory());
+    
+    return (
+      <Pagination 
+        key={`${new Date().getTime()}`}
+        data={{
+          elements: filteredBooksAtlas,
+          elementsType: Book,
+          action: this.props.deleteBook
+        }} 
+      />
+    );
   }
 
   render() { 
-    return(
+    const { userInput, bookCategory, searchOption } = this.state;
+    
+    return (
       <div className="container">
         <div style={{ marginTop: "4rem" }} className="row">
           <div className="search-form-container">
@@ -107,7 +114,7 @@ class ManagingBooks extends Component {
                 <input
                   type="text"
                   name="userInput"
-                  value={this.state.userInput}
+                  value={userInput}
                   onChange={this.onChange}
                 />
               </div>
@@ -119,7 +126,7 @@ class ManagingBooks extends Component {
                     type="radio" 
                     name="searchOption" 
                     value="title"
-                    checked={this.state.searchOption === "title"}
+                    checked={searchOption === "title"}
                     onChange={this.onChange}
                   />
                   Title
@@ -129,7 +136,7 @@ class ManagingBooks extends Component {
                     type="radio" 
                     name="searchOption" 
                     value="authors"
-                    checked={this.state.searchOption === "authors"}
+                    checked={searchOption === "authors"}
                     onChange={this.onChange}
                   />
                   Authors
@@ -142,7 +149,7 @@ class ManagingBooks extends Component {
             <label htmlFor="bookCategory">Book category:</label>
             <select 
               name="bookCategory"
-              value={this.state.bookCategory}
+              value={bookCategory}
               onChange={this.onChange}
             >
               <option value="default">Select book category</option>
@@ -150,19 +157,15 @@ class ManagingBooks extends Component {
             </select>
           </div>
 
-          <div>
-            <table>
-              <thead>
-                <tr>
-                  <th>Image</th>
-                  <th>Description</th>
-                  <th className="action">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.renderBooksAtlas()}
-              </tbody>
-            </table>
+          <div className="table">
+            <div className="table-header-row">
+              <div className="col1 img-col">Image</div>
+              <div className="col2">Description</div>
+              <div className="col3 action">Action</div>
+            </div>
+            <div className="books">
+              {this.renderPagination()}
+            </div>
           </div>
         </div>
       </div>
@@ -190,7 +193,7 @@ class Book extends Component {
     const {
       apiID,
       volumeInfo
-    } = this.props.bookData;
+    } = this.props.data;
     
     const {
       title,
@@ -204,16 +207,19 @@ class Book extends Component {
       imageLinks ? imageLinks.thumbnail : dummyCover;
     
     return (
-      <tr>
-        <td>
+      <div className="table-row">
+        <div className="col1 img-col">
           <img className="thumbnail" src={getBookCover()} alt="" />
-        </td>
-        <td>
+        </div>
+        <div className="col2">
           <h5><b>{title}</b></h5>
-          <h6>{subtitle}</h6>
-          <p><b>{authors}</b><br />{categories}</p>
-        </td>
-        <td className="action">
+          <h6 className="subtitle">{subtitle}</h6>
+          <p>
+            <b>{authors}</b><br />
+            <span className="category">{categories}</span>
+          </p>
+        </div>
+        <div className="col3 action">
           <i 
             className="material-icons delete-forever cursor-pointer" 
             onClick={() =>
@@ -224,14 +230,14 @@ class Book extends Component {
                   main: volumeInfo.title,
                   suffix: "from database?"
                 },
-                callback: () => this.props.deleteBook(apiID)
+                callback: () => this.props.action(apiID)
               })
             }
           >
             delete_forever
           </i>
-        </td>
-      </tr>
+        </div>
+      </div>
     );
   }
 }

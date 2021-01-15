@@ -7,10 +7,10 @@ import Confirm from "../layout/Confirm";
 class FavoriteBook extends Component {
   render() { 
     const { user } = this.props.auth;
-    const { apiID, volumeInfo } = this.props.bookData;
+    const { apiID, volumeInfo } = this.props.data;
 
-    return(
-      <Book bookData = {this.props.bookData}>
+    return (
+      <Book bookData = {this.props.data}>
         <span 
           className="material-icons delete" 
           onClick={() =>
@@ -21,7 +21,7 @@ class FavoriteBook extends Component {
                 main: volumeInfo.title,
                 suffix: "from favorites?"
               },
-              callback: () => this.props.deleteFavoriteBook(apiID, user.id)
+              callback: () => this.props.action(apiID, user.id)
             })
           }
         >

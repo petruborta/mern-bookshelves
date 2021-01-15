@@ -3,11 +3,11 @@ import Book from "./Book";
 
 class BookApi extends Component {
   render() { 
-    return(
-      <Book bookData = {this.props.bookData}>
+    return (
+      <Book bookData = {this.props.data}>
         <span 
           className="material-icons add" 
-          onClick={() => this.props.addBook(this.props.bookData)}
+          onClick={() => this.props.action(this.props.data)}
         >
           add_circle
         </span>

@@ -1,5 +1,5 @@
 .invisible {
-  opacity: 0;
+  display: none;
 }
 
 select {
@@ -65,6 +65,9 @@ site-header
   background-color: burlywood;
 }
 
+/*=====================================
+search-form
+=====================================*/
 .search-form-container {
   width: 80%;
   max-width: 650px;
@@ -75,25 +78,35 @@ site-header
   height: 200px;
 }
 
+/*=====================================
+search-results
+=====================================*/
+.container {
+  width: 100%;
+  max-width: 280px;
+  margin: auto;
+}
+
 .search-results {
   width: 100%;
   display: flex;
+  justify-content: flex-start;
   flex-wrap: wrap;
 }
 
 .book {
-  width: 300px;
-  margin: 1rem;
+  width: 250px;
+  margin: 15px;
   cursor: pointer;
 }
 
 .categories {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   font-style: italic;
   color: white;
   position: absolute;
-  margin: 1rem;
+  margin: 0.5rem;
   padding: 0.25rem 1rem;
   background-color: #eaa221;
   box-shadow: 0 0 10px 5px white;
@@ -103,14 +116,15 @@ site-header
 
 .book-image {
   position: relative;
-  height: 425px;
+  height: 375px;
+  border: 1px solid lightgray;
   border-radius: 10px;
   overflow: hidden;
 }
 
 .book-image > img {
+  height: 100%;
   width: 100%;
-  object-fit: cover;
   transition: transform 0.25s ease-in-out;
 }
 
@@ -174,20 +188,70 @@ site-header
   opacity: 1;
 }
 
+.book-description {
+  margin: 0.5rem 0;
+}
+
 /*=====================================
-users-table
+table
 =====================================*/
-.user-action {
+.table {
+  margin: 2rem 0;
+}
+
+.table-header-row,
+.table-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.5rem 0.5rem 0 0.5rem;
+  border-bottom: 1px solid lightgray;
+}
+
+.table-header-row {
+  font-weight: bold;
+}
+
+.table-row:nth-child(odd) {
+  background-color: rgb(235, 235, 235);
+}
+
+.col1 {
+  flex: 30%;
+  overflow-x: hidden;
+}
+
+.col2 {
+  flex: 50%;
+  margin: 0 1rem;
+  overflow-x: hidden;
+}
+
+.col3 {
+  flex: 15%;
+  max-width: 50px;
+}
+
+.action {
   text-align: center;
-  width: 10%;
 }
 
 /*=====================================
 books-table
 =====================================*/
+.img-col {
+  min-width: 80px;
+  max-width: 100px;
+}
+
 .thumbnail {
-  height: 100px;
-  width: auto;
+  width: 100%;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+}
+
+.subtitle, .category {
+  display: none;
 }
 
 .material-icons.delete-forever {
@@ -197,6 +261,41 @@ books-table
 
 .material-icons.delete-forever:hover {
   color: red;
+}
+
+/*=====================================
+pagination
+=====================================*/
+.pagination-container {
+  width: 100%;
+}
+
+.pagination {
+  margin: 1rem;
+}
+
+.page {
+  font-size: 1.25rem;
+  padding: 0 0.5rem;
+  border: 1px solid lightgray;
+}
+
+.page:hover {
+  background-color: white;
+}
+
+.page.active {
+  background-color: lightblue;
+}
+
+.page:first-of-type {
+  border-top-left-radius: 25%;
+  border-bottom-left-radius: 25%;
+}
+
+.page:last-of-type {
+  border-top-right-radius: 25%;
+  border-bottom-right-radius: 25%;
 }
 
 /*=====================================
@@ -273,4 +372,89 @@ alert
 
 .alert .material-icons {
   font-size: 40px;
+}
+
+/*=====================================
+media queries
+=====================================*/
+@media (max-width: 300px) {
+
+}
+
+
+
+@media (min-width: 576px) {
+  /*=====================================
+  search-results
+  =====================================*/
+  .container {
+    max-width: 560px;
+  }
+
+  /*=====================================
+  books-table
+  =====================================*/
+  .subtitle, .category {
+    display: block;
+  }
+}
+
+
+
+@media (min-width: 768px) {
+  /*=====================================
+  search-results
+  =====================================*/
+  .container {
+    max-width: 768px;
+  }
+
+  .book { 
+    width: 230px;
+    margin: 15px 10px;
+  }
+}
+
+
+
+@media (min-width: 1024px) {
+  /*=====================================
+  search-results
+  =====================================*/
+  .container {
+    max-width: 840px;
+  }
+
+  .book {
+    width: 250px;
+    margin: 15px;
+  }
+}
+
+
+
+@media (min-width: 1200px) {
+  /*=====================================
+  search-results
+  =====================================*/
+  .container {
+    max-width: 1120px;
+  }
+}
+
+
+
+@media (min-width: 1560px) {
+
+}
+
+
+
+@media (min-width: 2000px) {
+  /*=====================================
+  search-results
+  =====================================*/
+  .container {
+    max-width: 1680px;
+  }
 }

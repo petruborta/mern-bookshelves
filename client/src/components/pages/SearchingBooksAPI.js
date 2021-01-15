@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { addBook, extractPropsBookAPI } from "../../actions/bookActions";
 import classnames from "classnames";
 import BookAPI from "../book/BookAPI";
+import Pagination from "../layout/Pagination";
 
 class SearchingBooksAPI extends Component {
   constructor() {
@@ -50,6 +51,7 @@ class SearchingBooksAPI extends Component {
       books: [],
       errors: {}
     });
+
     const { userInput, maxResults} = this.state;
     
     var xmlhttp = new XMLHttpRequest();
@@ -65,24 +67,25 @@ class SearchingBooksAPI extends Component {
     xmlhttp.send();
   };
 
-  renderBooksAPI() {
-    return this.state.books.map((book) => {
-      const bookData = extractPropsBookAPI(book);
+  renderPagination() {
+    const booksAPI = this.state.books.map((book) => extractPropsBookAPI(book));
 
-      return (
-        <BookAPI 
-          key={book.id} 
-          bookData={bookData} 
-          addBook={this.props.addBook} 
-        />
-      );
-    });
+    return (
+      <Pagination 
+        key={`${new Date().getTime()}`}
+        data={{
+          elements: booksAPI,
+          elementsType: BookAPI,
+          action: this.props.addBook
+        }} 
+      />
+    );
   }
 
   render() {
     const { errors } = this.state;
 
-    return(
+    return (
       <div className="container">
         <div style={{ marginTop: "4rem" }} className="row">
           <div className="search-form-container">
@@ -131,8 +134,8 @@ class SearchingBooksAPI extends Component {
             </form>
           </div>
 
-          <div className="search-results">
-            {this.renderBooksAPI()}
+          <div>
+            {this.renderPagination()}
           </div>
         </div>
       </div>

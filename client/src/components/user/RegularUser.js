@@ -4,7 +4,7 @@ import Confirm from "../layout/Confirm";
 
 class UserRegular extends Component {
   render() {
-    const { id, name, email } = this.props.userData;
+    const { id, name, email } = this.props.data;
 
     return (
       <User name={name}  email={email}>
