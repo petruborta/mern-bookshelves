@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
+import suggestBook from "../../images/suggest-book.svg";
+import findBooks from "../../images/find-books.svg";
+import favoriteBooks from "../../images/favorite-books.svg";
 
 class Dashboard extends Component {
   onLogoutClick = e => {
@@ -14,36 +17,28 @@ class Dashboard extends Component {
     const { user } = this.props.auth;
 
     return (
-      <div style={{ height: "75vh" }} className="container valign-wrapper">
-        <div className="row">
-          <div className="col s12 center-align">
-            <h4>
-              <b>Hey there,</b> {user.name.split(" ")[0]}
-              <p className="flow-text grey-text text-darken-1">
-                You are logged into a full-stack{" "}
-                <span style={{ fontFamily: "monospace" }}>MERN</span> app 👏
-              </p>
-            </h4>
-            <br />
-            <div>
-              <Link to="/dashboard/suggest-book" className="btn">Suggest a book</Link>
-              <Link to="/dashboard/atlas-books" className="btn">Find books</Link>
-              <Link to="/dashboard/my-books" className="btn">My books</Link>
+      <div className="container entire-vh">
+        <div className="row centered">
+          <div className="col flex-col">
+            <h2>Wellcome back, {user.name.split(" ")[0]}!</h2>
+            <br/>
+            <div className="options-container">
+              <Link to="/dashboard/suggest-book" className="option">
+                <img src={suggestBook} alt="Suggest a book to be added to our collection" className="option-img"/>
+                Suggest a book
+              </Link>
+              <Link to="/dashboard/atlas-books" className="option">
+                <img src={findBooks} alt="Find books from our collection" className="option-img"/>
+                Find books
+              </Link>
+              <Link to="/dashboard/my-books" className="option">
+                <img src={favoriteBooks} alt="Your own collection of favorite books" className="option-img"/>
+                My books
+              </Link>
               {this.props.children}
             </div>
-            <br />
-            <button
-              style={{
-                width: "150px",
-                borderRadius: "3px",
-                letterSpacing: "1.5px",
-                marginTop: "1rem"
-              }}
-              onClick={this.onLogoutClick}
-              className="btn btn-large waves-effect waves-light hoverable blue accent-3"
-            >
-              Logout
-            </button>
+            <br/>
+            <button onClick={this.onLogoutClick} className="btn btn-logout">Logout</button>
           </div>
         </div>
       </div>

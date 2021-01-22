@@ -42,7 +42,9 @@ class Register extends Component {
   }
 
   onChange = e => {
-    this.setState({ [e.target.id]: e.target.value });
+    const { name: changedProperty, value: newValue } = e.target;
+    
+    this.setState({ [changedProperty]: newValue });
   };
   
   onSubmit = e => {
@@ -61,93 +63,88 @@ class Register extends Component {
     const { errors } = this.state;
     
     return (
-      <div className="container">
-        <div style={{ marginTop: "4rem" }} className="row">
-          <div className="col s8 offset-s2">
-            <Link to="/" className="btn-flat waves-effect">
-              <i className="material-icons left">keyboard_backspace</i> Back to
-              home
+      <div className="container entire-vh">
+        <div className="row centered">
+          <div className="col flex-col">
+            <Link to="/" className="btn btn-back">
+              <i className="material-icons left">keyboard_backspace</i>Back to home
             </Link>
 
-            <div className="col s12" style={{ paddingLeft: "11.250px" }}>
-              <h4>
-                <b>Register</b> below
-              </h4>
-              <p className="grey-text text-darken-1">
-                Already have an account? <Link to="/login">Log in</Link>
-              </p>
+            <div className="margin-tb-1">
+              <h2>Register below</h2>
+              <p>Already have an account? <Link to="/login">Log in</Link></p>
             </div>
+
             <form noValidate onSubmit={this.onSubmit}>
-              <div className="col s12">
-              <label htmlFor="name">Name</label>
-                <input
-                  onChange={this.onChange}
-                  value={this.state.name}
-                  error={errors.name}
-                  id="name"
-                  type="text"
-                  className={classnames("", {
-                    invalid: errors.name
-                  })}
-                />
+              <div className="margin-b-1">
+                <label className="flex-col">
+                  Name
+                  <input
+                      onChange={this.onChange}
+                      value={this.state.name}
+                      error={errors.name}
+                      name="name"
+                      type="text"
+                      className={classnames("", {
+                        invalid: errors.name
+                      })}
+                    />
+                  </label>
                 <span className="red-text">{errors.name}</span>
               </div>
-              <div className="col s12">
-              <label htmlFor="email">Email</label>
-                <input
-                  onChange={this.onChange}
-                  value={this.state.email}
-                  error={errors.email}
-                  id="email"
-                  type="email"
-                  className={classnames("", {
-                    invalid: errors.email
-                  })}
-                />
+
+              <div className="margin-b-1">
+                <label className="flex-col">
+                  Email
+                  <input
+                    onChange={this.onChange}
+                    value={this.state.email}
+                    error={errors.email}
+                    name="email"
+                    type="email"
+                    className={classnames("", {
+                      invalid: errors.email
+                    })}
+                  />
+                </label>
                 <span className="red-text">{errors.email}</span>
               </div>
-              <div className="col s12">
-                <label htmlFor="password">Password</label>
-                <input
-                  onChange={this.onChange}
-                  value={this.state.password}
-                  error={errors.password}
-                  id="password"
-                  type="password"
-                  className={classnames("", {
-                    invalid: errors.password
-                  })}
-                />
+
+              <div className="margin-b-1">
+                <label className="flex-col">
+                  Password
+                  <input
+                    onChange={this.onChange}
+                    value={this.state.password}
+                    error={errors.password}
+                    name="password"
+                    type="password"
+                    className={classnames("", {
+                      invalid: errors.password
+                    })}
+                  />
+                </label>
                 <span className="red-text">{errors.password}</span>
               </div>
-              <div className="col s12">
-                <label htmlFor="password2">Confirm Password</label>
-                <input
-                  onChange={this.onChange}
-                  value={this.state.password2}
-                  error={errors.password2}
-                  id="password2"
-                  type="password"
-                  className={classnames("", {
-                    invalid: errors.password2
-                  })}
-                />
+
+              <div className="margin-b-1">
+                <label className="flex-col">
+                  Confirm Password
+                  <input
+                    onChange={this.onChange}
+                    value={this.state.password2}
+                    error={errors.password2}
+                    name="password2"
+                    type="password"
+                    className={classnames("", {
+                      invalid: errors.password2
+                    })}
+                  />
+                </label>
                 <span className="red-text">{errors.password2}</span>
               </div>
-              <div className="col s12" style={{ paddingLeft: "11.250px" }}>
-                <button
-                  style={{
-                    width: "150px",
-                    borderRadius: "3px",
-                    letterSpacing: "1.5px",
-                    marginTop: "1rem"
-                  }}
-                  type="submit"
-                  className="btn btn-large waves-effect waves-light hoverable blue accent-3"
-                >
-                  Sign up
-                </button>
-              </div>
+
+              <button type="submit" className="btn btn-submit">Sign up</button>
             </form>
           </div>
         </div>

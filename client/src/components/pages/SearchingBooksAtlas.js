@@ -96,68 +96,80 @@ class SearchingBooksAtlas extends Component {
     const { userInput, bookCategory, searchOption } = this.state;
 
     return (
-      <div className="container">
-        <div style={{ marginTop: "4rem" }} className="row">
-          <div className="search-form-container">
-            <Link to="/dashboard" className="btn-flat waves-effect">
-              <i className="material-icons left">keyboard_backspace</i>
-              Back to dashboard
-            </Link>
-            <Link to="/dashboard/suggest-book" className="btn waves-effect waves-light hoverable blue accent-3">
-              Suggest a book
-            </Link>
+      <div className="container entire-vh">
+        <div className="row centered">
+          <div className="col flex-col">
+            <div className="margin-b-1 flex-wrap">
+              <Link to="/dashboard" className="btn btn-back">
+                <i className="material-icons left">keyboard_backspace</i>
+                Back to dashboard
+              </Link>
+              <Link to="/dashboard/suggest-book" className="btn btn-back">
+                Suggest a book
+              </Link>
+            </div>
 
-            <form>
-              <div className="col s12">
-                <label htmlFor="userInput">Search for...</label>
-                <input
-                  type="text"
-                  name="userInput"
-                  value={userInput}
-                  onChange={this.onChange}
-                />
-              </div>
+            <div className="margin-b-1">
+              <form>
+                <div className="margin-b-1">
+                  <label className="flex-col">
+                    Search for...
+                    <input
+                      type="text"
+                      name="userInput"
+                      value={userInput}
+                      onChange={this.onChange}
+                    />
+                  </label>
+                </div>
 
-              <div className="col s12" style={{ paddingLeft: "11.250px" }}>
                 <p>Please select where to search in:</p>
-                <label>
-                  <input 
-                    type="radio"
-                    name="searchOption"
-                    value="title" 
-                    checked={searchOption === "title"}
-                    onChange={this.onChange}
-                  />
-                  Title
-                </label>
-                <label>
-                  <input 
-                    type="radio" 
-                    name="searchOption"
-                    value="authors"
-                    checked={searchOption === "authors"}
-                    onChange={this.onChange}
-                  />
-                  Authors
-                </label>
-              </div>
-            </form>
-          </div>
+                <div className="radio-btn-group">
+                  <div className="margin-b-1 radio-btn">
+                    <label className="flex-col">
+                      <input 
+                        type="radio"
+                        name="searchOption"
+                        value="title" 
+                        checked={searchOption === "title"}
+                        onChange={this.onChange}
+                      />
+                      Title
+                    </label>
+                  </div>
+                  <div className="margin-b-1 radio-btn">
+                    <label className="flex-col">
+                      <input 
+                        type="radio" 
+                        name="searchOption"
+                        value="authors"
+                        checked={searchOption === "authors"}
+                        onChange={this.onChange}
+                      />
+                      Authors
+                    </label>
+                  </div>
+                </div>
+              </form>
+            </div>
 
-          <div className="select-field">
-            <label htmlFor="bookCategory">Book category:</label>
-            <select 
-              name="bookCategory"
-              value={bookCategory}
-              onChange={this.onChange}
-            >
-              <option value="default">Select book category</option>
-              {this.renderBookCategories()}
-            </select>
-          </div>
+            <div className="select-field">
+              <label className="flex-col">
+                Book category:
+                <select 
+                  name="bookCategory"
+                  value={bookCategory}
+                  onChange={this.onChange}
+                >
+                  <option value="default">Select book category</option>
+                  {this.renderBookCategories()}
+                </select>
+              </label>
+            </div>
 
-          <div>
-            {this.renderPagination()}
+            <div className="search-results">
+              {this.renderPagination()}
+            </div>
           </div>
         </div>
       </div>

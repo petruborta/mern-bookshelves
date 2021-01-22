@@ -19,23 +19,25 @@ class SearchingBooksAPI extends Component {
   }
 
   onChange = e => {
-    const {
+    let {
       name: changedProperty,
       value: newValue
     } = e.target;
 
     if (changedProperty === "maxResults") {
-      this.setState({ 
-        [changedProperty]: newValue > 40 
-          ? 40 : newValue < 1 
-            ? 1 : newValue 
-      });
-
-      return;
+      newValue = this.validateMaxResults(newValue);
     }
 
     this.setState({ [changedProperty]: newValue });
   };
+
+  validateMaxResults(value) {
+    if (value.match(/\D/)) return 5;
+
+    return value > 40 
+      ? 40 : value < 1 
+        ? 1 : value;
+  }
 
   onSubmit = e => {
     e.preventDefault();
@@ -86,56 +88,54 @@ class SearchingBooksAPI extends Component {
     const { errors } = this.state;
 
     return (
-      <div className="container">
-        <div style={{ marginTop: "4rem" }} className="row">
-          <div className="search-form-container">
-            <Link to="/dashboard" className="btn-flat waves-effect">
-              <i className="material-icons left">keyboard_backspace</i>
-              Back to dashboard
-            </Link>
-            <form noValidate onSubmit={this.onSubmit}>
-              <div className="col s3">
-                <label htmlFor="maxResults">Max results (40):</label>
-                <input 
-                  type="text" 
-                  name="maxResults" 
-                  value={this.state.maxResults}
-                  onChange={this.onChange}
-                />
-              </div>
-              <div className="col s12">
-                <label htmlFor="userInput">Search for...</label>
-                <input
-                  type="text"
-                  name="userInput"
-                  value={this.state.userInput}
-                  onChange={this.onChange}
-                  error={errors.noinput}
-                  className={classnames("", {
-                    invalid: errors.noinput
-                  })}
-                />
-                <span className="red-text">{errors.noinput}</span>
-              </div>
-              <div className="col s12" style={{ paddingLeft: "11.250px" }}>
-                <button
-                  style={{
-                    width: "150px",
-                    borderRadius: "3px",
-                    letterSpacing: "1.5px",
-                    marginTop: "1rem"
-                  }}
-                  type="submit"
-                  className="btn btn-large waves-effect waves-light hoverable blue accent-3"
-                >
-                  Search
-                </button>
-              </div>
-            </form>
-          </div>
+      <div className="container entire-vh">
+        <div className="row centered">
+          <div className="col flex-col">
+            <div className="margin-b-1">
+              <Link to="/dashboard" className="btn btn-back">
+                <i className="material-icons left">keyboard_backspace</i>
+                Back to dashboard
+              </Link>
+            </div>
 
-          <div>
-            {this.renderPagination()}
+            <div className="margin-b-1">
+              <form noValidate onSubmit={this.onSubmit}>
+                <div className="margin-b-1">
+                  <label className="flex-col">
+                    Max results (40):
+                    <input 
+                      type="text" 
+                      name="maxResults" 
+                      value={this.state.maxResults}
+                      onChange={this.onChange}
+                    />
+                  </label>
+                </div>
+
+                <div className="margin-b-1">
+                  <label className="flex-col">
+                    Search for...
+                    <input
+                      type="text"
+                      name="userInput"
+                      value={this.state.userInput}
+                      onChange={this.onChange}
+                      error={errors.noinput}
+                      className={classnames("", {
+                        invalid: errors.noinput
+                      })}
+                    />
+                  </label>
+                  <span className="red-text">{errors.noinput}</span>
+                </div>
+
+                <button type="submit" className="btn btn-submit">Search</button>
+              </form>
+            </div>
+
+            <div className="search-results">
+              {this.renderPagination()}
+            </div>
           </div>
         </div>
       </div>

@@ -25,6 +25,7 @@ import SearchingBooksAtlas from "./components/pages/SearchingBooksAtlas";
 import ManagingBooks from "./components/pages/ManagingBooks";
 import ManagingAdmins from "./components/pages/ManagingAdmins";
 import Error from "./components/error/Error";
+import Footer from "./components/layout/Footer";
 
 require('dotenv').config();
 
@@ -50,8 +51,8 @@ class App extends Component {
           <div className="App">
             <Navbar />
             <Announcement data={{
-              title: "In development", 
-              description: "\"Suggest a book\" feature"
+              title: "In development,", 
+              description: "\"Suggest a book\" feature."
             }} />
             <Alert />
             <Confirm />
@@ -68,6 +69,7 @@ class App extends Component {
               <PrivateRoute path="/dashboard/manage-admins" component={ManagingAdmins} />
               <Route path="*" component={Error} />
             </Switch>
+            <Footer />
           </div>
         </Router>
       </Provider>

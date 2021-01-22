@@ -1,24 +1,45 @@
-import React, { Component } from "react";
+import React, { Component, createRef } from "react";
+import { Link } from "react-router-dom";
 
 class Landing extends Component {
+  constructor() {
+    super();
+    this.sectionAbout = createRef();
+  }
+
+  scrollToSectionAbout = () => {
+    this.sectionAbout.current.scrollIntoView({ 
+      behavior: 'smooth' 
+    });
+  }
+
   render() {
     return (
-      <div style={{ height: "75vh" }} className="container valign-wrapper">
-        <div className="row">
-          <div className="col s12 center-align">
-            <h4>
-              <b>Build</b> a login/auth app with the{" "}
-              <span style={{ fontFamily: "monospace" }}>MERN</span> stack from
-              scratch
-            </h4>
-            <p className="flow-text grey-text text-darken-1">
-              Create a (minimal) full-stack app with user authentication via
-              passport and JWTs
-            </p>
-            <br />
+      <main>
+        <div className="parallax">
+          <div className="container">
+            <div className="row centered">
+              <div className="parallax-content">
+                <h1 className="large-text">All</h1>
+                <h1>your favorite books</h1>
+                <h1>in one place</h1>
+                <br/><br/>
+                <Link to="/dashboard/atlas-books" className="btn btn-browse">Browse collection</Link>
+
+                <div className="explore-btn-container centered" onClick={this.scrollToSectionAbout}>
+                  <span className="material-icons explore-btn cursor-pointer">
+                    arrow_drop_down_circle
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
       </div>
+
+      <section style={{height:"100vh"}} ref={this.sectionAbout}>
+
+      </section>
+      </main>
     );
   }
 }

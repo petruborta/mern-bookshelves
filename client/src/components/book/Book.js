@@ -24,7 +24,7 @@ class Book extends Component {
     };
 
     const hideIfNoCategories = () => 
-      categories === "" ? " invisible" : "";
+      categories === "" ? " hidden" : "";
 
     const getBookCover = () => 
       imageLinks ? imageLinks.thumbnail : dummyCover;
@@ -39,8 +39,8 @@ class Book extends Component {
           {this.props.children}
         </div>
         <div className="book-description">
-          <h5><b>{title}</b></h5>
-          <h6>{subtitle}</h6>
+          <h2><b>{title}</b></h2>
+          <h3 className="subtitle">{subtitle}</h3>
           <p>{authors && "By "}<b>{authors}</b>{authors && publishedYear && " · "}{publishedYear}</p>
         </div>
       </div>

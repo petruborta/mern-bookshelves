@@ -35,11 +35,15 @@ class Pagination extends Component {
       : null;
   }
 
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.setProperties);
+  }
+
   onPageClick = (e) => {
-    const { tabIndex: clickedPage } = e.target;
+    const { innerText: clickedPage } = e.target;
 
     if (clickedPage > 0) {
-      this.setState({ currentPage: clickedPage });
+      this.setState({ currentPage: Number(clickedPage) });
     }
   }
 
@@ -72,10 +76,10 @@ class Pagination extends Component {
   
   getRowsPerPageBasedOnWindowHeight() {
     const windowHeight = window.innerHeight;
-    let rowsPerPage = 2;
+    let rowsPerPage = 3;
 
-    if ( windowHeight >= 1500) {
-      rowsPerPage = 3;
+    if (windowHeight >= 1500) {
+      rowsPerPage = 4;
     }
 
     return rowsPerPage;
@@ -101,9 +105,11 @@ class Pagination extends Component {
     const windowWidth = window.innerWidth;
     let elementsPerRow = 1;
 
-    if (windowWidth >= 2000) {
+    if (windowWidth >= 2560) {
       elementsPerRow = 6;
-    } else if (windowWidth >= 1200) {
+    } else if (windowWidth >= 1920) {
+      elementsPerRow = 5;
+    } else if (windowWidth >= 1024) {
       elementsPerRow = 4;
     } else if (windowWidth >= 768) {
       elementsPerRow = 3;
@@ -143,8 +149,8 @@ class Pagination extends Component {
 
     for (let i = startIndex; i <= endIndex; ++i) {
       i === currentPage
-      ? pages.push(this.createPage(i, i, i, "active"))
-      : pages.push(this.createPage(i, i, i));
+      ? pages.push(this.createPage(0, i, i, "active"))
+      : pages.push(this.createPage(0, i, i));
     }
 
     return pages;
@@ -264,14 +270,14 @@ class Pagination extends Component {
 
   render() {
     return (
-      <div className="search-results">
+      <React.Fragment>
         {this.renderElements()}
         <div className="pagination-container">
           <ul className="pagination">
             {this.renderPages()}
           </ul>
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }

@@ -25,7 +25,13 @@ const PrivateRoute = ({ component, auth, ...rest }) => {
           if (!auth.user.isAdmin 
             && Component.hasOwnProperty("WrappedComponent") 
             && adminRoutes.includes(Component["WrappedComponent"].name)) {
-              return <Error message={"Access denied/forbidden"} />;
+              return (
+                <Error 
+                  cssClass="error-403"
+                  error="ACCESS DENIED"
+                  message="The page you are trying to access has restricted access. Please refer to your system administrator."
+                />
+              );
           }
           else {
             return <Component {...props} />;

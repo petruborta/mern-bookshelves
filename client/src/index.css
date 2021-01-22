@@ -1,10 +1,19 @@
 /*=====================================
-general
+variables
 =====================================*/
 :root {
   --background-color: #F3F4F6;
+  --midnight-blue : #012e67;
+  --cadet-blue : #9cacbf;
+  --calypso : #2b6684;
+  --calypso50: #2b66847f;
+  --blue-whale : #032e42;
+  --aztec : #0a1417;
 }
 
+/*=====================================
+general
+=====================================*/
 * {
   margin: 0;
   padding: 0;
