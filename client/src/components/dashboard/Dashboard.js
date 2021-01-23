@@ -6,6 +6,7 @@ import { logoutUser } from "../../actions/authActions";
 import suggestBook from "../../images/suggest-book.svg";
 import findBooks from "../../images/find-books.svg";
 import favoriteBooks from "../../images/favorite-books.svg";
+import Slider from "../layout/Slider";
 
 class Dashboard extends Component {
   onLogoutClick = e => {
@@ -13,15 +14,25 @@ class Dashboard extends Component {
     this.props.logoutUser();
   };
 
-  render() {
+  getUserName = () => {
     const { user } = this.props.auth;
+    return user.name.split(" ")[0];
+  };
 
+  hasAtLeastNBooks = (n) => {
+    const { user } = this.props.auth;
+    return user.books.length >= n;
+  };
+
+  render() {
     return (
       <div className="container entire-vh">
         <div className="row centered">
           <div className="col flex-col">
-            <h2>Wellcome back, {user.name.split(" ")[0]}!</h2>
-            <br/>
+            <h2>Wellcome back, {this.getUserName()}!</h2><br/>
+
+            {this.hasAtLeastNBooks(10) && <Slider />}
+
             <div className="options-container">
               <Link to="/dashboard/suggest-book" className="option">
                 <img src={suggestBook} alt="Suggest a book to be added to our collection" className="option-img"/>
@@ -36,8 +47,8 @@ class Dashboard extends Component {
                 My books
               </Link>
               {this.props.children}
-            </div>
-            <br/>
+            </div><br/>
+
             <button onClick={this.onLogoutClick} className="btn btn-logout">Logout</button>
           </div>
         </div>

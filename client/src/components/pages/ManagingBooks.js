@@ -225,12 +225,10 @@ class Book extends Component {
           <img className="thumbnail" src={getBookCover()} alt="" />
         </div>
         <div className="col2">
-          <h5><b>{title}</b></h5>
-          <h6 className="subtitle">{subtitle}</h6>
-          <p>
-            <b>{authors}</b><br />
-            <span className="category">{categories}</span>
-          </p>
+          <h2><b>{title}</b></h2>
+          <h3 className="subtitle">{subtitle}</h3><br/>
+          <p>{authors && "By "}<b>{authors}</b></p>
+          <span className="italic-500">{categories}</span>
         </div>
         <div className="col3 action">
           <i 

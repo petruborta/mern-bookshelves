@@ -34,13 +34,13 @@ class Book extends Component {
         onClick={(e) => openInNewWindow(e)}
       >
         <div className="book-image">
-          <span className={"categories" + hideIfNoCategories()}>{categories}</span>
+          <span className={"categories italic-500" + hideIfNoCategories()}>{categories}</span>
           <img src={getBookCover()} alt="" />
           {this.props.children}
         </div>
         <div className="book-description">
           <h2><b>{title}</b></h2>
-          <h3 className="subtitle">{subtitle}</h3>
+          <h3 className="subtitle">{subtitle}</h3><br/>
           <p>{authors && "By "}<b>{authors}</b>{authors && publishedYear && " · "}{publishedYear}</p>
         </div>
       </div>

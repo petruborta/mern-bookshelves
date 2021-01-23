@@ -48,10 +48,7 @@ class Confirm extends Component {
     return (
       <React.Fragment>
         {dialogIsOpen && (
-          <div 
-            className="modal"
-            onClick={(e) => this.clickedOnModal(e) && this.__hide() }
-          >
+          <div className="modal" onClick={(e) => this.clickedOnModal(e) && this.__hide() }>
             <div className="modal-content">
               <h5>{title}</h5>
               <p>{prefix} <b>{main}</b> {suffix}</p>

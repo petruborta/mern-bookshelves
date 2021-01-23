@@ -49,13 +49,13 @@ function Announcement(props) {
       style={{display:display}}
       onClick={(e) => redirectTo(pathToSuggestBook, e)}
     >
-      <i className="material-icons megaphone">
-        campaign
-      </i>
+      <i className="material-icons megaphone">campaign</i>
+
       <div className="announcement-content flex-col">
         <h4>{title}</h4>
         <h4>{description}</h4>
       </div>
+      
       <span
         className="material-icons close cursor-pointer"
         onClick={closeAnnouncement}

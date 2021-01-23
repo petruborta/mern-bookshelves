@@ -94,7 +94,7 @@ class Pagination extends Component {
         return coefficient * 4;
       }
       if (pathname.includes("books")) {
-        return coefficient * 3;
+        return coefficient * 2;
       }
     } 
     

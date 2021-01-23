@@ -72,6 +72,7 @@ input, button, select, .btn, .option, .page {
   padding: 0.5rem 1rem;
   border-radius: 25px;
   background-color: var(--blue-whale);
+  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
 }
 
 .btn:hover,
@@ -126,6 +127,10 @@ input, button, select, .btn, .option, .page {
 
 .red-text { color: red; }
 .white-text { color: white; }
+.italic-500 {
+  font-weight: 500;
+  font-style: italic;
+}
 .cursor-pointer { cursor: pointer; }
 
 .bg-img {
@@ -361,16 +366,27 @@ dashboard
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding: 0 0.5rem;
+  padding: 0.5rem;
   margin: 0.5rem 0;
   border-radius: 25px;
   border: 3px solid lightgray;
+  transition: all 0.2s ease-in-out;
+}
+
+.option > img {
+  transition: transform 0.2s ease-in-out;
 }
 
 .option:hover,
 .option:focus {
   background-color: white;
   border: 3px solid var(--midnight-blue);
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, .25);
+}
+
+.option:hover > img,
+.option:focus > img {
+  transform: scale(1.1);
 }
 
 .option-img {
@@ -397,8 +413,6 @@ search-results
 
 .categories {
   max-width: calc(100% - 1rem);
-  font-weight: 500;
-  font-style: italic;
   color: white;
   position: absolute;
   top: 0;
@@ -420,7 +434,7 @@ search-results
   display: flex;
   align-items: center;
   margin-right: 10px;
-  border: 1px solid var(--aztec);
+  border: 1px solid var(--cadet-blue);
   border-radius: 10px;
   background-color: white;
   overflow: hidden;
@@ -497,6 +511,7 @@ search-results
 }
 
 .subtitle {
+  color: var(--calypso);
   display: none;
 }
 
@@ -511,7 +526,7 @@ table
 .table-row {
   display: flex;
   align-items: center;
-  padding: 0.5rem;
+  padding: 0.5rem 0 0.5rem 0.5rem;
   border-bottom: 1px solid lightgray;
 }
 
@@ -524,13 +539,13 @@ table
 }
 
 .col1 {
-  flex: 30%;
+  flex: 25%;
   overflow-x: hidden;
 }
 
 .col2 {
-  flex: 50%;
-  margin: 0 1rem;
+  flex: 55%;
+  margin-left: 1rem;
   overflow-x: hidden;
 }
 
@@ -555,10 +570,6 @@ books-table
   width: 100%;
   border: 1px solid lightgray;
   border-radius: 5px;
-}
-
-.subtitle, .category {
-  display: none;
 }
 
 .material-icons.delete-forever {
@@ -605,6 +616,68 @@ pagination
 .page:last-of-type {
   border-top-right-radius: 25%;
   border-bottom-right-radius: 25%;
+}
+
+/*=====================================
+slider
+=====================================*/
+.slider {
+	height: 250px;
+  position: relative;
+  margin-bottom: 2rem;
+  border-radius: 25px;
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, .125);
+  background: white;
+  overflow: hidden;
+}
+
+.slider::before,
+.slider::after {
+  content: "";
+  height: 250px;
+  width: 100px;
+  position: absolute;
+  background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+  z-index: 2;
+}
+
+.slider::after {
+  right: 0;
+  top: 0;
+  transform: rotateZ(180deg);
+}
+
+.slider::before {
+  left: 0;
+  top: 0;
+}
+  
+.slider-track {
+  animation: scroll 40s linear infinite;
+  display: flex;
+  width: calc(150px * 20);
+}
+
+.slider-track:hover {
+  animation-play-state: paused;
+}
+
+.slide {
+  height: 250px;
+  width: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slide > img {
+  border: 1px solid lightgray;
+  border-radius: 5px;
+}
+
+@keyframes scroll {
+	0% { transform: translateX(0); }
+	100% { transform: translateX(calc(-150px * 10))}
 }
 
 /*=====================================
@@ -685,7 +758,7 @@ alert
   flex-direction: column;
   align-items: center;
   position: fixed;
-  top: 50px;
+  top: 75px;
   padding: 0.5rem;
   border: 1px solid black;
   border-radius: 10px;
@@ -729,13 +802,6 @@ media queries
   =====================================*/
   .nav-bar, .row {
     max-width: 500px;
-  }
-
-  /*=====================================
-  search-results
-  =====================================*/
-  .subtitle {
-    display: block;
   }
 }
 
@@ -823,10 +889,7 @@ media queries
     overflow-y: auto;
   }
 
-  /*=====================================
-  books-table
-  =====================================*/
-  .subtitle, .category {
+  .subtitle {
     display: block;
   }
 }
