@@ -92,7 +92,7 @@ class SearchingBooksAPI extends Component {
         <div className="row centered">
           <div className="col flex-col">
             <div className="margin-b-1">
-              <Link to="/dashboard" className="btn btn-back">
+              <Link to="/dashboard" className="btn btn-flex">
                 <i className="material-icons left">keyboard_backspace</i>
                 Back to dashboard
               </Link>
@@ -129,7 +129,7 @@ class SearchingBooksAPI extends Component {
                   <span className="red-text">{errors.noinput}</span>
                 </div>
 
-                <button type="submit" className="btn btn-submit">Search</button>
+                <button type="submit" className="btn btn-fit-content">Search</button>
               </form>
             </div>
 

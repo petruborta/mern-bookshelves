@@ -10,7 +10,7 @@ class SuggestingBook extends Component {
             <div className="container bg-img under-construction"></div>
             <h1 className="error-code">UNDER CONSTRUCTION</h1>
             <p className="error-message">This page is currently in development. We will announce you when it's done.</p>
-            <Link to="/dashboard" className="btn btn-back">
+            <Link to="/dashboard" className="btn btn-flex">
               <i className="material-icons left">keyboard_backspace</i>
               Back to dashboard
             </Link>

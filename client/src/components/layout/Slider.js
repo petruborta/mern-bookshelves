@@ -1,16 +1,17 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
 
 class Slider extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      ...props.data
+    }
+  }
+
   renderSlides = () => {
-    const { user } = this.props.auth;
-    const numOfBooks = user.books.length;
-    const books = user.books.slice(numOfBooks - 10, numOfBooks);
-    
     return (
       <>
-        {books.map(book => (
+        {this.state.books.map(book => (
           <div key={book.apiID} className="slide">
             <img src={book.volumeInfo.imageLinks.thumbnail} height="210" width="130" alt="" />
           </div>
@@ -21,24 +22,18 @@ class Slider extends Component {
 
   render() {
     return (
-      <div className="slider">
-        <div className="slider-track">
-          {this.renderSlides()}
-          {this.renderSlides()}
+      <React.Fragment>
+        <h2>{this.state.heading}</h2><br/>
+
+        <div className="slider">
+          <div className="slider-track">
+            {this.renderSlides()}
+            {this.renderSlides()}
+          </div>
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }
 
-Slider.propTypes = {
-  auth: PropTypes.object.isRequired
-};
-
-const mapStateToProps = state => ({
-  auth: state.auth
-});
-
-export default connect(
-  mapStateToProps
-)(Slider);
+export default Slider;

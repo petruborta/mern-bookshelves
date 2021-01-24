@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { fetchFavoriteBooks } from "../../actions/bookActions";
 import { logoutUser } from "../../actions/authActions";
 import suggestBook from "../../images/suggest-book.svg";
 import findBooks from "../../images/find-books.svg";
@@ -9,30 +10,36 @@ import favoriteBooks from "../../images/favorite-books.svg";
 import Slider from "../layout/Slider";
 
 class Dashboard extends Component {
+  componentDidMount() {
+    this.props.fetchFavoriteBooks(this.props.auth.user.id);
+  }
+  
   onLogoutClick = e => {
     e.preventDefault();
     this.props.logoutUser();
   };
 
   getUserName = () => {
-    const { user } = this.props.auth;
-    return user.name.split(" ")[0];
+    return this.props.auth.user.name.split(" ")[0];
   };
 
-  hasAtLeastNBooks = (n) => {
-    const { user } = this.props.auth;
-    return user.books.length >= n;
+  userHasAtLeastNBooks = (n) => {
+    return this.props.auth.user.books.length >= n;
   };
 
   render() {
+    const heading = "Your latest addings";
+    const books = this.props.auth.user.books.slice(0, 10);
+
     return (
       <div className="container entire-vh">
         <div className="row centered">
           <div className="col flex-col">
-            <h2>Wellcome back, {this.getUserName()}!</h2><br/>
+            <h1>Wellcome back, {this.getUserName()}!</h1><br/>
 
-            {this.hasAtLeastNBooks(10) && <Slider />}
+            {this.userHasAtLeastNBooks(10) && <Slider data={{heading, books}} />}
 
+            <h2>Options panel</h2>
             <div className="options-container">
               <Link to="/dashboard/suggest-book" className="option">
                 <img src={suggestBook} alt="Suggest a book to be added to our collection" className="option-img"/>
@@ -49,7 +56,7 @@ class Dashboard extends Component {
               {this.props.children}
             </div><br/>
 
-            <button onClick={this.onLogoutClick} className="btn btn-logout">Logout</button>
+            <button onClick={this.onLogoutClick} className="btn btn-fit-content">Logout</button>
           </div>
         </div>
       </div>
@@ -58,6 +65,7 @@ class Dashboard extends Component {
 }
 
 Dashboard.propTypes = {
+  fetchFavoriteBooks: PropTypes.func.isRequired,
   logoutUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
@@ -68,5 +76,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { logoutUser }
+  { fetchFavoriteBooks, logoutUser }
 )(Dashboard);

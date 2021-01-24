@@ -26,6 +26,7 @@ import ManagingBooks from "./components/pages/ManagingBooks";
 import ManagingAdmins from "./components/pages/ManagingAdmins";
 import Error from "./components/error/Error";
 import Footer from "./components/layout/Footer";
+import ScrollToTop from "./components/layout/ScrollToTop";
 
 require('dotenv').config();
 
@@ -43,6 +44,10 @@ if (localStorage.jwtToken) {
   }
 }
 
+window.onbeforeunload = () => {
+  window.scrollTo(0, 0);
+};
+
 class App extends Component {
   render() {
     return (
@@ -56,19 +61,21 @@ class App extends Component {
             }} />
             <Alert />
             <Confirm />
-            <Switch>
-              <Route exact path="/" component={Landing} />
-              <Route path="/register" component={Register} />
-              <Route path="/login" component={Login} />
-              <PrivateRoute exact path="/dashboard" component={[Dashboard, AdminDashboard]} />
-              <PrivateRoute path="/dashboard/suggest-book" component={SuggestingBook} />
-              <PrivateRoute path="/dashboard/atlas-books" component={SearchingBooksAtlas} />
-              <PrivateRoute path="/dashboard/my-books" component={MyBooks} />
-              <PrivateRoute path="/dashboard/api-books" component={SearchingBooksAPI} />
-              <PrivateRoute path="/dashboard/manage-books" component={ManagingBooks} />
-              <PrivateRoute path="/dashboard/manage-admins" component={ManagingAdmins} />
-              <Route path="*" component={Error} />
-            </Switch>
+            <ScrollToTop>
+              <Switch>
+                <Route exact path="/" component={Landing} />
+                <Route path="/register" component={Register} />
+                <Route path="/login" component={Login} />
+                <PrivateRoute exact path="/dashboard" component={[Dashboard, AdminDashboard]} />
+                <PrivateRoute path="/dashboard/suggest-book" component={SuggestingBook} />
+                <PrivateRoute path="/dashboard/atlas-books" component={SearchingBooksAtlas} />
+                <PrivateRoute path="/dashboard/my-books" component={MyBooks} />
+                <PrivateRoute path="/dashboard/api-books" component={SearchingBooksAPI} />
+                <PrivateRoute path="/dashboard/manage-books" component={ManagingBooks} />
+                <PrivateRoute path="/dashboard/manage-admins" component={ManagingAdmins} />
+                <Route path="*" component={Error} />
+              </Switch>
+            </ScrollToTop>
             <Footer />
           </div>
         </Router>

@@ -66,7 +66,7 @@ class Register extends Component {
       <div className="container entire-vh">
         <div className="row centered">
           <div className="col flex-col">
-            <Link to="/" className="btn btn-back">
+            <Link to="/" className="btn btn-flex">
               <i className="material-icons left">keyboard_backspace</i>Back to home
             </Link>
 
@@ -144,7 +144,7 @@ class Register extends Component {
                 <span className="red-text">{errors.password2}</span>
               </div>
 
-              <button type="submit" className="btn btn-submit">Sign up</button>
+              <button type="submit" className="btn btn-fit-content">Sign up</button>
             </form>
           </div>
         </div>

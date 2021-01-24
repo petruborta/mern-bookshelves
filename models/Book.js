@@ -23,6 +23,10 @@ const BookSchema = new Schema({
     },
     language: String,
     infoLink: String
+  },
+  date: {
+    type: Date,
+    default: Date.now
   }
 });
 

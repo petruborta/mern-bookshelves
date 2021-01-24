@@ -22,9 +22,21 @@ const initialState = {
 const getBookCategories = books => {
   const categories = books
     .map(book => book.volumeInfo.categories)
-    .filter(category => category !== "");
+    .filter(category => category !== "")
+    .sort(ascending);
 
   return [...new Set(categories)];
+};
+
+const ascending = (a, b) => {
+  if (a > b) {
+    return 1;
+  }
+  if (a < b) {
+    return -1;
+  }
+
+  return 0;
 };
 
 const filterAtlasBooks = (booksAtlas, bookToBeDeleted) => {

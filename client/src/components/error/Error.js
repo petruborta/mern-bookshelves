@@ -11,8 +11,8 @@ class Error extends Component {
           <div className="flex-col content-center margin-rl-1">
             <div className={`container bg-img ${cssClass || "error-404"}`}></div>
             <h2 className="error-code">{error || "PAGE NOT FOUND"}</h2>
-            <p className="error-message">{message || "The page you are looking for might have been removed, had its name changed or is temporaeily unavailable."}</p>
-            <Link to="/dashboard" className="btn btn-back">
+            <p className="error-message">{message || "The page you are looking for might have been removed, had its name changed or is temporarily unavailable."}</p>
+            <Link to="/dashboard" className="btn btn-flex">
               <i className="material-icons left">keyboard_backspace</i>
               Back to dashboard
             </Link>

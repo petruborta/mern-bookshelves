@@ -102,7 +102,7 @@ router.post("/login", (req, res) => {
 });
 
 router.get("/regular", (req, res) => {
-  User.find({ isAdmin: { $eq: false } })
+  User.find({ isAdmin: { $eq: false }})
     .then(users => res.json(users.map(user => {
       return {
         id: user.id,
@@ -134,13 +134,13 @@ router.get("/admin", (req, res) => {
 router.post("/make-admin", (req, res) => {
   User.findByIdAndUpdate(
     req.body.userID,
-    { $set: { isAdmin: true } },
+    { $set: { isAdmin: true }},
     function(err) {
       if (err) {
         return res.status(400).json("Couldn't promote regular user to admin.");
-      } else {
-        return res.json("Regular user successfully promoted to admin!");
       }
+      
+      return res.json("Regular user successfully promoted to admin!");
     }
   );
 });
@@ -148,13 +148,13 @@ router.post("/make-admin", (req, res) => {
 router.post("/remove-admin", (req, res) => {
   User.findByIdAndUpdate(
     req.body.userID,
-    { $set: { isAdmin: false } },
+    { $set: { isAdmin: false }},
     function(err) {
       if (err) {
         return res.status(400).json("Couldn't demote admin to regular user.");
-      } else {
-        return res.json("Admin successfully demoted to regular user!");
       }
+      
+      return res.json("Admin successfully demoted to regular user!");
     }
   );
 });

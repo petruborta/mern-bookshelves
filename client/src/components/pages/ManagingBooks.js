@@ -101,11 +101,11 @@ class ManagingBooks extends Component {
         <div className="row centered">
           <div className="col flex-col">
             <div className="margin-b-1 flex-wrap">
-              <Link to="/dashboard" className="btn btn-back">
+              <Link to="/dashboard" className="btn btn-flex">
                 <i className="material-icons left">keyboard_backspace</i>
                 Back to dashboard
               </Link>
-              <Link to="/dashboard/api-books" className="btn btn-back">
+              <Link to="/dashboard/api-books" className="btn btn-flex">
                 Extend database
               </Link>
             </div>

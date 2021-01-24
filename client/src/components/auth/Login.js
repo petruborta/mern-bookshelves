@@ -66,7 +66,7 @@ class Login extends Component {
       <div className="container entire-vh">
         <div className="row centered">
           <div className="col flex-col">
-            <Link to="/" className="btn btn-back">
+            <Link to="/" className="btn btn-flex">
               <i className="material-icons left">keyboard_backspace</i> Back to home
             </Link>
 
@@ -116,7 +116,7 @@ class Login extends Component {
                 </span>
               </div>
 
-              <button type="submit" className="btn btn-submit">Login</button>
+              <button type="submit" className="btn btn-fit-content">Login</button>
             </form>
           </div>
         </div>

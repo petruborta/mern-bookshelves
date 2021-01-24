@@ -1,10 +1,18 @@
 import React, { Component, createRef } from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { fetchBooksAtlas } from "../../actions/bookActions";
+import Slider from "./Slider";
 
 class Landing extends Component {
   constructor() {
     super();
     this.sectionAbout = createRef();
+  }
+
+  componentDidMount() {
+    this.props.fetchBooksAtlas();
   }
 
   scrollToSectionAbout = () => {
@@ -13,10 +21,17 @@ class Landing extends Component {
     });
   }
 
+  collectionHasAtLeastNBooks = (n) => {
+    return this.props.auth.user.booksAtlas.length >= n;
+  };
+
   render() {
+    const heading = "Our newest books";
+    const books = this.props.auth.user.booksAtlas.slice(0, 10);
+
     return (
       <main>
-        <div className="parallax">
+        <section className="parallax">
           <div className="container">
             <div className="row centered">
               <div className="parallax-content">
@@ -34,14 +49,32 @@ class Landing extends Component {
               </div>
             </div>
           </div>
-      </div>
+        </section>
 
-      <section style={{height:"100vh"}} ref={this.sectionAbout}>
+        <section className="container about" ref={this.sectionAbout}>
+          <div className="row centered">
+            <div className="col flex-col">
+            {this.collectionHasAtLeastNBooks(10) && <Slider data={{heading, books}} />}
 
-      </section>
+              <Link to="/dashboard" className="btn btn-fit-content centered">Go to Dashboard</Link>
+            </div>
+          </div>
+        </section>
       </main>
     );
   }
 }
 
-export default Landing;
+Landing.propTypes = {
+  fetchBooksAtlas: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(
+  mapStateToProps,
+  { fetchBooksAtlas }
+)(Landing);
