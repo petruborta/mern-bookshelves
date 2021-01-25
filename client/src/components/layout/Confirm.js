@@ -50,11 +50,11 @@ class Confirm extends Component {
         {dialogIsOpen && (
           <div className="modal" onClick={(e) => this.clickedOnModal(e) && this.__hide() }>
             <div className="modal-content">
-              <h5>{title}</h5>
+              <h2>{title}</h2>
               <p>{prefix} <b>{main}</b> {suffix}</p>
 
-              <button onClick={this.__hide}>Cancel</button>
-              <button onClick={this.__confirm}>OK</button>
+              <button className="cancel" onClick={this.__hide}>Cancel</button>
+              <button className="confirm" onClick={this.__confirm}>OK</button>
             </div>
           </div>
         )}

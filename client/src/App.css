@@ -20,6 +20,34 @@ a {
   text-decoration: none;
 }
 
+button {
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  margin: 1rem 0.5rem 0 0;
+  border-radius: 15px;
+  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+button.confirm {
+  color: white;
+  background-color: var(--blue-whale);
+}
+
+button.confirm:hover,
+button.confirm:focus {
+  color: var(--blue-whale);
+  background-color: white;
+}
+
+button.cancel {
+  background-color: lightgray;
+}
+
+button.cancel:hover,
+button.cancel:focus {
+  background-color: white;
+}
+
 input, select {
   font-size: 1rem;
   padding: 0.5rem 1rem;
@@ -116,6 +144,30 @@ input, button, select, .btn, .option, .page {
   padding: 0.5rem 2rem;
 }
 
+.scroll-to-top-btn {
+  height: 3rem;
+  width: 3rem;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 2rem;
+  right: 2rem;
+  border: 3px solid var(--blue-whale);
+  box-shadow: 0 0 10px 3px white;
+  z-index: 2;
+}
+
+.scroll-to-top-btn .arrow-up {
+  font-size: 40px;
+  padding: 0.5rem;
+}
+
+.scroll-to-top-btn:hover {
+  color: var(--blue-whale);
+  background-color: white;
+}
+
 .fixed { 
   position: fixed;
 }
@@ -142,6 +194,11 @@ input, button, select, .btn, .option, .page {
 
 .hidden { 
   display: none;
+}
+
+.invisible {
+  opacity: 0;
+  transition: opacity 0.15s ease-in-out;
 }
 
 .centered { 
@@ -216,11 +273,18 @@ header {
   height: var(--nav-height);
   background-image: linear-gradient(var(--midnight-blue), transparent);
   backdrop-filter: blur(15px);
+  transition: height 0.15s ease-in-out;
   z-index: 3;
+}
+
+.header-hidden {
+  height: 0;
+  transition: height 0.3s ease-in-out;
 }
 
 .nav-bar {
   position: relative;
+  transition: opacity 0.3s ease-in-out;
 }
 
 nav {
@@ -257,7 +321,7 @@ a.logo {
   position: fixed;
   left: 0;
   top: 0;
-  background-color: var(--calypso);
+  background-color: var(--blue-whale);
   transform: translateX(100%);
   transition: transform 0.15s ease-in-out;
   z-index: -1;
@@ -335,7 +399,7 @@ menu
 
 .menu-item:hover,
 .menu-item:focus {
-  color: var(--blue-whale);
+  color: var(--calypso);
 }
 
 .menu-item.active {
@@ -714,7 +778,7 @@ slider
 
 .slide {
   height: 250px;
-  width: 150px;
+  margin: 0 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -722,6 +786,7 @@ slider
 }
 
 .slide > img {
+  width: auto;
   border: 1px solid lightgray;
   border-radius: 5px;
 }
@@ -739,6 +804,7 @@ announcement
   top: var(--nav-height);
   border: 3px solid var(--cadet-blue);
   background-color: var(--background-color);
+  transition: top 0.15s ease-in-out;
   z-index: 2;
 }
 
@@ -764,8 +830,9 @@ announcement
   background-color: var(--cadet-blue);
 }
 
-header.hidden + .announcement {
+.header-hidden + .announcement {
   top: 0;
+  transition: top 0.3s ease-in-out;
 }
 
 /*=====================================
@@ -793,6 +860,7 @@ confirm
   top: 50%;
   left: 50%;
   border: 1px solid #888;
+  border-radius: 5px;
   background-color: #fefefe;
   box-shadow: 0 20px 20px -10px black;
   transform: translate(-50%, -50%);
@@ -802,6 +870,7 @@ confirm
 alert
 =====================================*/
 .alert {
+  color: white;
   max-width: 250px;
   text-align: center;
   flex-direction: column;
@@ -809,7 +878,6 @@ alert
   position: fixed;
   top: 75px;
   padding: 0.5rem;
-  border: 1px solid black;
   border-radius: 10px;
   box-shadow: 0 20px 20px -10px black;
   transform: translateX(calc(50vw - 50%));
@@ -818,6 +886,24 @@ alert
 
 .alert .material-icons {
   font-size: 40px;
+}
+
+.success {
+  border: 3px solid var(--success-light);
+  background-color: var(--success);
+}
+
+.success .material-icons {
+  color: var(--success-dark);
+}
+
+.danger {
+  border: 3px solid var(--danger-light);
+  background-color: var(--danger);
+}
+
+.danger .material-icons {
+  color: var(--danger-dark);
 }
 
 /*=====================================

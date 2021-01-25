@@ -27,6 +27,7 @@ import ManagingAdmins from "./components/pages/ManagingAdmins";
 import Error from "./components/error/Error";
 import Footer from "./components/layout/Footer";
 import ScrollToTop from "./components/layout/ScrollToTop";
+import ScrollToTopButton from "./components/layout/ScrollToTopButton";
 
 require('dotenv').config();
 
@@ -43,10 +44,6 @@ if (localStorage.jwtToken) {
     window.location.href = "./login";
   }
 }
-
-window.onbeforeunload = () => {
-  window.scrollTo(0, 0);
-};
 
 class App extends Component {
   render() {
@@ -76,6 +73,7 @@ class App extends Component {
                 <Route path="*" component={Error} />
               </Switch>
             </ScrollToTop>
+            <ScrollToTopButton />
             <Footer />
           </div>
         </Router>

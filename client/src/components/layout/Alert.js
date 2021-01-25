@@ -36,18 +36,18 @@ class Alert extends Component {
     
     switch(status) {
       case "200":
-        color = "lightgreen";
+        color = "success";
         icon = "check_circle";
         break;
       case "400":
       case "404":
       case "409":
-        color = "red";
+        color = "danger";
         icon = "error";
         break;
       case "500":
         data = "Internal server error.";
-        color = "red";
+        color = "danger";
         icon = "cloud_off";
         break;
       default:
@@ -111,14 +111,8 @@ class Alert extends Component {
     const { data, display, color, icon, remainingTime } = this.state;
 
     return (
-      <div 
-        className={"alert " + color}
-        style={{
-          display: display,
-          backgroundColor: color
-        }}
-      >
-        <i className={"material-icons dark" + color}>{icon}</i>
+      <div className={"alert " + color} style={{display: display}}>
+        <i className="material-icons">{icon}</i>
         <p>{data}</p>
         <progress value={remainingTime} max={this.totalTime}></progress>
       </div>

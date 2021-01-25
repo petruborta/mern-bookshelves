@@ -3,13 +3,16 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
+import classnames from "classnames";
 import logo from "../../images/logo-sm.png";
 
 class Navbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentPage: "home" //TODO: get current page name
+      currentPage: "home", //TODO: get current page name
+      prevScrollpos: window.pageYOffset,
+      visible: true
     };
 
     this.pages = {
@@ -27,7 +30,6 @@ class Navbar extends Component {
 
     this.menuButton = createRef();
     this.mainNav = createRef();
-
   }
 
   onNavigation = (e) => {
@@ -39,6 +41,7 @@ class Navbar extends Component {
 
   componentDidMount() {
     this.setCurrentPageAsActive();
+    window.addEventListener("scroll", this.handleScroll);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -54,12 +57,32 @@ class Navbar extends Component {
     );
   }
 
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
+  }
+
   removeActiveClassFromPage = (page) => {
     this.pages[page].current.classList.remove("active");
   }
 
   setCurrentPageAsActive = () => {
     this.pages[this.state.currentPage].current.classList.add("active");
+  }
+
+  handleScroll = () => {
+    if (this.mainNav.current.classList.contains("visible")) {
+      this.closeMenuButton();
+    }
+
+    const { prevScrollpos } = this.state;
+
+    const currentScrollPos = window.pageYOffset;
+    const visible = prevScrollpos > currentScrollPos;
+
+    this.setState({
+      prevScrollpos: currentScrollPos,
+      visible
+    });
   }
 
   closeMenuButton = () => {
@@ -218,8 +241,16 @@ class Navbar extends Component {
 
   render() {
     return (
-      <header className="container fixed">
-        <div className="nav-bar centered">
+      <header 
+        className={classnames("container fixed", {
+          "header-hidden": !this.state.visible
+        })}
+      >
+        <div 
+          className={classnames("nav-bar centered", {
+            "invisible": !this.state.visible
+          })}
+        >
           <nav>
             <div className="logo-container">
               <Link to="/" className="logo white-text" onClick={this.closeMenuButton}>

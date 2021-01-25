@@ -1,18 +1,26 @@
 import React, { Component, createRef } from "react";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { fetchBooksAtlas } from "../../actions/bookActions";
+import axios from "axios";
 import Slider from "./Slider";
+import Alert from "./Alert";
 
 class Landing extends Component {
   constructor() {
     super();
+    this.state = {
+      books: []
+    };
     this.sectionAbout = createRef();
   }
 
   componentDidMount() {
-    this.props.fetchBooksAtlas();
+    axios
+      .get("/books/")
+      .then(res => this.setState({ books: res.data.slice(0, 10) }))
+      .catch(err => {
+        const { status, data } = err.response;
+        Alert.show({ [status]: data });
+      });
   }
 
   scrollToSectionAbout = () => {
@@ -22,12 +30,12 @@ class Landing extends Component {
   }
 
   collectionHasAtLeastNBooks = (n) => {
-    return this.props.auth.user.booksAtlas.length >= n;
+    return this.state.books.length >= n;
   };
 
   render() {
     const heading = "Our newest books";
-    const books = this.props.auth.user.booksAtlas.slice(0, 10);
+    const { books } = this.state;
 
     return (
       <main>
@@ -65,16 +73,4 @@ class Landing extends Component {
   }
 }
 
-Landing.propTypes = {
-  fetchBooksAtlas: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
-};
-
-const mapStateToProps = state => ({
-  auth: state.auth
-});
-
-export default connect(
-  mapStateToProps,
-  { fetchBooksAtlas }
-)(Landing);
+export default Landing;

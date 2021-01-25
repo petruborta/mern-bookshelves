@@ -9,6 +9,12 @@ variables
   --calypso50: #2b66847f;
   --blue-whale : #032e42;
   --aztec : #0a1417;
+  --success: rgb(92, 184, 92);
+  --success-light: rgb(122, 214, 122);
+  --success-dark: rgb(32, 124, 32);
+  --danger: rgb(217, 83, 79);
+  --danger-light: rgb(247, 113, 109);
+  --danger-dark: rgb(157, 23, 19);
 }
 
 /*=====================================
@@ -20,13 +26,16 @@ general
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  scroll-behavior: smooth;
   background-color: var(--background-color);
 }
 
