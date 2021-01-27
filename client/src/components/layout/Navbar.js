@@ -1,5 +1,5 @@
 import React, { Component, createRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
@@ -10,7 +10,7 @@ class Navbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentPage: "home", //TODO: get current page name
+      currentPage: null,
       prevScrollpos: window.pageYOffset,
       visible: true
     };
@@ -32,16 +32,40 @@ class Navbar extends Component {
     this.mainNav = createRef();
   }
 
-  onNavigation = (e) => {
-    let { id: page } = e.target;
-
-    if (page === "to-home-logo") page = "home";
-    this.setState({ currentPage: page });
-  }
-
   componentDidMount() {
     this.setCurrentPageAsActive();
     window.addEventListener("scroll", this.handleScroll);
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { location } = nextProps;
+    const onNavigation = (location) => {
+      const { pathname } = location;
+      let page;
+  
+      switch(pathname) {
+        case "/": page = "home"; break;
+        case "/register": page = "register"; break;
+        case "/login": page = "login"; break;
+        case "/dashboard": page = "dashboard"; break;
+        case "/dashboard/my-books": page = "myBooks"; break;
+        case "/dashboard/atlas-books": page = "atlasBooks"; break;
+        case "/dashboard/suggest-book": page = "suggestBook"; break;
+        case "/dashboard/api-books": page = "apiBooks"; break;
+        case "/dashboard/manage-books": page = "manageBooks"; break;
+        case "/dashboard/manage-admins": page = "manageAdmins"; break;
+        default:
+          page = null;
+      }
+  
+      return page;
+    };
+
+    const nextPage = onNavigation(location);
+
+    return nextPage !== prevState.currentPage 
+      ? { currentPage: nextPage }
+      : null;
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -51,14 +75,14 @@ class Navbar extends Component {
     }
   }
 
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
+  }
+
   removeActiveClassFromPages = () => {
     Object.keys(this.pages).map(page =>
       this.pages[page].current && this.removeActiveClassFromPage(page)
     );
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener("scroll", this.handleScroll);
   }
 
   removeActiveClassFromPage = (page) => {
@@ -66,7 +90,13 @@ class Navbar extends Component {
   }
 
   setCurrentPageAsActive = () => {
-    this.pages[this.state.currentPage].current.classList.add("active");
+    const currentPage = this.pages[this.state.currentPage];
+    
+    if (currentPage !== undefined && currentPage !== null) {
+      if (currentPage.current !== null) {
+        currentPage.current.classList.add("active");
+      }
+    }
   }
 
   handleScroll = () => {
@@ -102,7 +132,7 @@ class Navbar extends Component {
           to="/dashboard/api-books" 
           id="apiBooks" 
           className="menu-item white-text" 
-          onClick={(e) => {this.onNavigation(e); this.toggleMenuButton()}} 
+          onClick={this.toggleMenuButton} 
           ref={this.pages.apiBooks}
         >
           Add new books
@@ -111,7 +141,7 @@ class Navbar extends Component {
           to="/dashboard/manage-books" 
           id="manageBooks" 
           className="menu-item white-text" 
-          onClick={(e) => {this.onNavigation(e); this.toggleMenuButton()}} 
+          onClick={this.toggleMenuButton} 
           ref={this.pages.manageBooks}
         >
           Manage existing books
@@ -120,7 +150,7 @@ class Navbar extends Component {
           to="/dashboard/manage-admins" 
           id="manageAdmins" 
           className="menu-item white-text" 
-          onClick={(e) => {this.onNavigation(e); this.toggleMenuButton()}} 
+          onClick={this.toggleMenuButton} 
           ref={this.pages.manageAdmins}
         >
           Manage administrators
@@ -139,7 +169,7 @@ class Navbar extends Component {
             to="/" 
             id="home" 
             className="menu-item white-text" 
-            onClick={(e) => {this.onNavigation(e); this.toggleMenuButton()}} 
+            onClick={this.toggleMenuButton} 
             ref={this.pages.home}
           >
             Home
@@ -150,7 +180,7 @@ class Navbar extends Component {
             to="/dashboard" 
             id="dashboard" 
             className="menu-item white-text" 
-            onClick={(e) => {this.onNavigation(e); this.toggleMenuButton()}} 
+            onClick={this.toggleMenuButton} 
             ref={this.pages.dashboard}
           >
             Dashboard
@@ -161,7 +191,7 @@ class Navbar extends Component {
             to="/dashboard/my-books" 
             id="myBooks" 
             className="menu-item white-text" 
-            onClick={(e) => {this.onNavigation(e); this.toggleMenuButton()}} 
+            onClick={this.toggleMenuButton} 
             ref={this.pages.myBooks}
           >
             My books
@@ -171,7 +201,7 @@ class Navbar extends Component {
             to="/dashboard/atlas-books" 
             id="atlasBooks"  
             className="menu-item white-text" 
-            onClick={(e) => {this.onNavigation(e); this.toggleMenuButton()}} 
+            onClick={this.toggleMenuButton} 
             ref={this.pages.atlasBooks}
           >
             Find books
@@ -181,7 +211,7 @@ class Navbar extends Component {
             to="/dashboard/suggest-book" 
             id="suggestBook" 
             className="menu-item white-text" 
-            onClick={(e) => {this.onNavigation(e); this.toggleMenuButton()}} 
+            onClick={this.toggleMenuButton} 
             ref={this.pages.suggestBook}
           >
             Suggest a book
@@ -193,8 +223,8 @@ class Navbar extends Component {
           <Link 
             to="/login" 
             id="login" 
-            className="menu-item white-text red-text" 
-            onClick={(e) => {this.onNavigation(e); this.props.logoutUser(); this.toggleMenuButton()}} 
+            className="menu-item white-text" 
+            onClick={() => {this.props.logoutUser(); this.toggleMenuButton()}} 
             ref={this.pages.login}
           >
             Log out
@@ -209,7 +239,7 @@ class Navbar extends Component {
           to="/" 
           id="home" 
           className="menu-item white-text" 
-          onClick={(e) => {this.onNavigation(e); this.toggleMenuButton()}} 
+          onClick={this.toggleMenuButton} 
           ref={this.pages.home}
         >
           Home
@@ -220,7 +250,7 @@ class Navbar extends Component {
           to="/register" 
           id="register" 
           className="menu-item white-text" 
-          onClick={(e) => {this.onNavigation(e); this.toggleMenuButton()}} 
+          onClick={this.toggleMenuButton} 
           ref={this.pages.register}
         >
           Register
@@ -230,7 +260,7 @@ class Navbar extends Component {
           to="/login" 
           id="login" 
           className="menu-item white-text red-text" 
-          onClick={(e) => {this.onNavigation(e); this.toggleMenuButton()}} 
+          onClick={this.toggleMenuButton} 
           ref={this.pages.login}
         >
           Log in
@@ -254,7 +284,7 @@ class Navbar extends Component {
           <nav>
             <div className="logo-container">
               <Link to="/" className="logo white-text" onClick={this.closeMenuButton}>
-                <img src={logo} alt="bookshelves logo" className="logo-img"/>
+                <img src={logo} alt="Bookshelves logo" className="logo-img"/>
                 <span className="app-name">Bookshelves</span>
               </Link>
             </div>
@@ -284,7 +314,7 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   { logoutUser }
-)(Navbar);
+)(Navbar));

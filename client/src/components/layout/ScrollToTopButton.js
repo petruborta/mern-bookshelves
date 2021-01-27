@@ -14,11 +14,11 @@ function ScrollToTopButton() {
   });
 
   const onScroll = () => {
-    const visible = pageYOffsetIsGreaterThenInnerHeight(1.25);
+    const visible = pageYOffsetIsGreaterThanInnerHeight(1.25);
     setVisible(visible);
   };
 
-  const pageYOffsetIsGreaterThenInnerHeight = (coefficient = 1) => {
+  const pageYOffsetIsGreaterThanInnerHeight = (coefficient = 1) => {
     return getCurrentYOffset() > coefficient * window.innerHeight;
   };
 

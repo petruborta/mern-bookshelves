@@ -12,8 +12,10 @@ class Slider extends Component {
     return (
       <>
         {this.state.books.map(book => (
-          <div key={book.apiID} className="slide">
-            <img src={book.volumeInfo.imageLinks.thumbnail} height="210" width="130" alt="" />
+          <div key={book.apiID} className="slide cursor-pointer">
+            <a href={book.volumeInfo.infoLink} target="_blank" rel="noopener noreferrer">
+              <img src={book.volumeInfo.imageLinks.thumbnail} height="210" width="130" alt="Book cover of one of your latest 10 addings" />
+            </a>
           </div>
         ))}
       </>
@@ -23,7 +25,7 @@ class Slider extends Component {
   render() {
     return (
       <React.Fragment>
-        <h2>{this.state.heading}</h2><br/>
+        <h2 className="margin-t-1">{this.state.heading}</h2><br/>
 
         <div className="slider">
           <div className="slider-track">

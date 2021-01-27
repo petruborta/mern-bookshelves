@@ -22,6 +22,18 @@ function Announcement(props) {
     return location.pathname === pathToSuggestBook;
   }
 
+  function atErrorPage() {
+    if (location.pathname === "/" && history.action === "POP") {
+      return false;
+    }
+    
+    return location.key === undefined;
+  }
+
+  function clickedOnClose(e) {
+    return e.target.className.includes("close");
+  }
+
   function announcementIsVisible() {
     return display === "flex";
   }
@@ -31,7 +43,7 @@ function Announcement(props) {
   }
 
   function redirectTo(path, e) {
-    if (!e.target.className.includes("close")) {
+    if (!clickedOnClose(e)) {
       history.push(path);
       if (userIsAuthenticated()) {
         closeAnnouncement();
@@ -39,14 +51,14 @@ function Announcement(props) {
     }
   }
 
-  if (userIsAuthenticated() && atSuggestBookPage() && announcementIsVisible()) {
+  if (userIsAuthenticated() && (atSuggestBookPage() || atErrorPage()) && announcementIsVisible()) {
     closeAnnouncement();
   }
 
   return (
     <div 
       className="container announcement sub-nav cursor-pointer"
-      style={{display:display}}
+      style={{display}}
       onClick={(e) => redirectTo(pathToSuggestBook, e)}
     >
       <i className="material-icons megaphone">campaign</i>

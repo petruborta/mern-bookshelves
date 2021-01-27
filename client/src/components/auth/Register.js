@@ -26,10 +26,10 @@ class Register extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { errors } = nextProps;
+    const { errors: nextErrors } = nextProps;
     
-    return errors !== prevState.errors 
-      ? { errors: errors }
+    return nextErrors !== prevState.errors 
+      ? { errors: nextErrors }
       : null;
   }
 
