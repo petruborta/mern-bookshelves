@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const passport = require("passport");
+const path = require("path");
 
 const users = require("./routes/users");
 const books = require("./routes/books");
@@ -14,6 +15,7 @@ app.use(
   })
 );
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, "client/build")));
 
 const db = require("./config/keys").ATLAS_URI;
 
