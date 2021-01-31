@@ -482,6 +482,7 @@ dashboard
 }
 
 .option {
+  color: #000;
   font-size: large;
   font-weight: 500;
   display: flex;
