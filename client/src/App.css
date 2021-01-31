@@ -585,6 +585,12 @@ search-results
     background-color 0.3s ease-in-out;
 }
 
+@media only screen and (max-device-width: 1024px) {
+  .book-image > .material-icons {
+    opacity: 1;
+  }
+}
+
 .book-image > .material-icons:hover {
   transform: scale(1.2);
 }
