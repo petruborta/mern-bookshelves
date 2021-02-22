@@ -11,7 +11,7 @@ class Navbar extends Component {
     super(props);
     this.state = {
       currentPage: null,
-      prevScrollpos: window.pageYOffset,
+      prevScrollPosition: window.pageYOffset,
       visible: true
     };
 
@@ -100,17 +100,13 @@ class Navbar extends Component {
   }
 
   handleScroll = () => {
-    if (this.mainNav.current.classList.contains("visible")) {
-      this.closeMenuButton();
-    }
+    const { prevScrollPosition } = this.state;
 
-    const { prevScrollpos } = this.state;
-
-    const currentScrollPos = window.pageYOffset;
-    const visible = prevScrollpos > currentScrollPos;
+    const currentScrollPosition = window.pageYOffset;
+    const visible = prevScrollPosition > currentScrollPosition;
 
     this.setState({
-      prevScrollpos: currentScrollPos,
+      prevScrollPosition: currentScrollPosition,
       visible
     });
   }
@@ -125,6 +121,10 @@ class Navbar extends Component {
     this.mainNav.current.classList.toggle("visible");
   }
   
+  mainNavIsVisible = () => {
+    return this.mainNav.current && this.mainNav.current.classList.contains("visible");
+  }
+
   getAdminOptions() {
     return (
       <React.Fragment>
@@ -273,16 +273,16 @@ class Navbar extends Component {
     return (
       <header 
         className={classnames("container fixed", {
-          "header-hidden": !this.state.visible
+          "header-hidden": !this.mainNavIsVisible() && !this.state.visible
         })}
       >
         <div 
           className={classnames("nav-bar centered", {
-            "invisible": !this.state.visible
+            "invisible": !this.mainNavIsVisible() && !this.state.visible
           })}
         >
           <nav>
-            <div className="logo-container">
+            <div className="logo-container cursor-pointer">
               <Link to="/" className="logo white-text" onClick={this.closeMenuButton}>
                 <img src={logo} alt="Bookshelves logo" className="logo-img"/>
                 <span className="app-name">Bookshelves</span>
@@ -296,7 +296,7 @@ class Navbar extends Component {
             </div>
           </nav>
 
-          <div className="menu-btn" onClick={this.toggleMenuButton} ref={this.menuButton}>
+          <div className="menu-btn cursor-pointer" onClick={this.toggleMenuButton} ref={this.menuButton}>
             <div className="menu-btn-lines"></div>
           </div>
         </div>
