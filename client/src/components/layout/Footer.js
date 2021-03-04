@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import logo from "../../images/petruborta-logo.png";
 
 class Footer extends Component {
   render() {
@@ -15,7 +16,12 @@ class Footer extends Component {
               <a href="https://www.freepik.com/free-vector/403-error-forbidden-with-police-concept-illustration_8030434.htm#page=1&query=forbidden&position=16" target="blank">403 error forbidden vector created by stories</a>
               <a href="https://www.freepik.com/free-vector/construction-landing-page-template_4741650.htm#page=1&query=under%20construction&position=3" target="blank">Under construction vector created by pikisuperstar</a>
 
-              <p className="copyright">Copyright <span>&#169;</span>2021 All Rights Reserved<a href="https://github.com/petruborta" target="blank">petruborta</a></p>
+              <p className="copyright"><span>&#169;</span>2021 Bookshelves. All Rights Reserved.</p>
+              
+              <div className="author">
+                <p>DESIGN &#38; DEVELOPMENT</p>
+                <a href="https://petruborta.com" target="_blank" rel="noopener noreferrer"><img src={logo} alt="Petru Borta logo"/></a>
+              </div>
             </div>
           </div>
         </div>

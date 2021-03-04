@@ -217,7 +217,7 @@ class Book extends Component {
     } = volumeInfo;
 
     const getBookCover = () => 
-      imageLinks ? imageLinks.thumbnail : dummyCover;
+      imageLinks ? imageLinks.thumbnail.replace("http", "https") : dummyCover;
     
     return (
       <div className="table-row">

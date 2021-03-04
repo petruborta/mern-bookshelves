@@ -27,7 +27,7 @@ class Book extends Component {
       categories === "" ? " hidden" : "";
 
     const getBookCover = () => 
-      imageLinks ? imageLinks.thumbnail : dummyCover;
+      imageLinks ? imageLinks.thumbnail.replace("http", "https") : dummyCover;
 
     return (
       <div className="book" 

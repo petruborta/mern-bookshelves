@@ -11,7 +11,13 @@
     "client:build": "npm run build --prefix client",
     "dev": "concurrently \"npm run server:dev\" \"npm run client\""
   },
-  "keywords": ["MongoDB", "Express(.js)", "React(.js)", "Node(.js)", "Bookshelves"],
+  "keywords": [
+    "MongoDB",
+    "Express(.js)",
+    "React(.js)",
+    "Node(.js)",
+    "Bookshelves"
+  ],
   "author": "Petru Borta",
   "license": "ISC",
   "dependencies": {

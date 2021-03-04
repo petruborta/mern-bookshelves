@@ -14,7 +14,7 @@ class Slider extends Component {
         {this.state.books.map(book => (
           <div key={book.apiID} className="slide cursor-pointer">
             <a href={book.volumeInfo.infoLink} target="_blank" rel="noopener noreferrer">
-              <img src={book.volumeInfo.imageLinks.thumbnail} height="210" width="130" alt="Book cover of one of your latest 10 addings" />
+              <img src={book.volumeInfo.imageLinks.thumbnail.replace("http", "https")} height="210" width="130" alt="Book cover of one of your latest 10 addings" />
             </a>
           </div>
         ))}

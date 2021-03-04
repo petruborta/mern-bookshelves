@@ -967,6 +967,21 @@ footer a:hover {
   margin: 2rem 0 0 0;
 }
 
+.author {
+  margin: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.author > p {
+  color: var(--cadet-blue);
+}
+
+.author > a {
+  padding: 0.5rem;
+}
+
 /*=====================================
 media queries
 =====================================*/
