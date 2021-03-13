@@ -18,7 +18,7 @@ class Pagination extends Component {
       totalRows,
       pagesCount,
       currentPage: 1,
-      maxPagesAroundCurrentPage: 3
+      maxPagesOnAnySideOfCurrentPage: 3
     };
   }
 
@@ -134,7 +134,7 @@ class Pagination extends Component {
     return (
       <li 
         key={pageKey} 
-        className={`page ${active}`} 
+        className={`page cursor-pointer ${active}`} 
         tabIndex={tabIndex} 
         onClick={this.onPageClick}
       >
@@ -163,41 +163,41 @@ class Pagination extends Component {
   }
 
   currentPageAmongTheFirst() {
-    const { currentPage: currentPageNumber, maxPagesAroundCurrentPage } = this.state;
+    const { currentPage: currentPageNumber, maxPagesOnAnySideOfCurrentPage } = this.state;
     const firstPage = 1, currentPage = 1;
-    const numberOfFirstNPages = firstPage + maxPagesAroundCurrentPage + currentPage;
+    const numberOfFirstNPages = firstPage + maxPagesOnAnySideOfCurrentPage + currentPage;
     
     return currentPageNumber <= numberOfFirstNPages;
   }
 
   createTheFirstPages() {
-    const { pagesCount, currentPage, maxPagesAroundCurrentPage } = this.state;
+    const { pagesCount, currentPage, maxPagesOnAnySideOfCurrentPage } = this.state;
     let pages = [];
 
-    pages.push(this.createPages(1, currentPage + maxPagesAroundCurrentPage));
+    pages.push(this.createPages(1, currentPage + maxPagesOnAnySideOfCurrentPage));
     pages.push(this.createPage(-1, -1, "..."));
-    pages.push(this.createPages(pagesCount, pagesCount, pagesCount));
+    pages.push(this.createPage(pagesCount, pagesCount, pagesCount));
 
     return pages;
   }
 
   currentPageAmongTheMiddle() {
-    const { currentPage: currentPageNumber, maxPagesAroundCurrentPage, pagesCount } = this.state;
+    const { currentPage: currentPageNumber, maxPagesOnAnySideOfCurrentPage, pagesCount } = this.state;
     const firstPage = 1, currentPage = 1, lastPage = 1;
-    const numberOfFirstNPages = firstPage + maxPagesAroundCurrentPage + currentPage;
-    const numberOfLastNPages = pagesCount - maxPagesAroundCurrentPage - lastPage;
+    const numberOfFirstNPages = firstPage + maxPagesOnAnySideOfCurrentPage + currentPage;
+    const numberOfLastNPages = pagesCount - maxPagesOnAnySideOfCurrentPage - lastPage;
 
     return currentPageNumber > numberOfFirstNPages 
       && currentPageNumber < numberOfLastNPages;
   }
 
   createTheMiddlePages() {
-    const { pagesCount, currentPage, maxPagesAroundCurrentPage } = this.state;
+    const { pagesCount, currentPage, maxPagesOnAnySideOfCurrentPage } = this.state;
     let pages = [];
 
     pages.push(this.createPage(1, 1, 1));
     pages.push(this.createPage(-1, -1, "..."));
-    pages.push(this.createPages(currentPage - maxPagesAroundCurrentPage, currentPage + maxPagesAroundCurrentPage));
+    pages.push(this.createPages(currentPage - maxPagesOnAnySideOfCurrentPage, currentPage + maxPagesOnAnySideOfCurrentPage));
     pages.push(this.createPage(-2, -2, "..."));
     pages.push(this.createPage(pagesCount, pagesCount, pagesCount));
 
@@ -205,20 +205,20 @@ class Pagination extends Component {
   }
 
   currentPageAmongTheLast() {
-    const { currentPage: currentPageNumber, maxPagesAroundCurrentPage, pagesCount } = this.state;
+    const { currentPage: currentPageNumber, maxPagesOnAnySideOfCurrentPage, pagesCount } = this.state;
     const lastPage = 1;
-    const numberOfLastNPages = pagesCount - maxPagesAroundCurrentPage - lastPage;
+    const numberOfLastNPages = pagesCount - maxPagesOnAnySideOfCurrentPage - lastPage;
 
     return currentPageNumber >= numberOfLastNPages;
   }
 
   createTheLastPages() {
-    const { pagesCount, currentPage, maxPagesAroundCurrentPage } = this.state;
+    const { pagesCount, currentPage, maxPagesOnAnySideOfCurrentPage } = this.state;
     let pages = [];
 
     pages.push(this.createPage(1, 1, 1));
     pages.push(this.createPage(-1, -1, "..."));
-    pages.push(this.createPages(currentPage - maxPagesAroundCurrentPage, pagesCount));
+    pages.push(this.createPages(currentPage - maxPagesOnAnySideOfCurrentPage, pagesCount));
 
     return pages;
   }
