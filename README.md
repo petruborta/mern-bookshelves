@@ -69,10 +69,10 @@ module.exports = {
   
   `REACT_APP_BOOKS_API_KEY=YOUR_GOOGLE_BOOKS_API_KEY`
 
-* Change to client folder `cd client` and run `sudo npm install` to install all the dependencies
-* Go back to pproject's main folder `cd ..` and run `sudo npm install` to install all the dependencies
+* Change working directory `cd client` and run `sudo npm install` to install all the dependencies
+* Go back to project's main folder `cd ..` and run `sudo npm install` to install all the dependencies
 
-* Now you can run `npm run dev` to see the project live
+* Use the command `npm run dev` to see the project live
 
 ## Status
 
